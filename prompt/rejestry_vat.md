@@ -23,18 +23,22 @@ Wprowadzając dokument do rejestru vatowskiego należy szczególnie zwrócić uw
 |Eksport usług UE (art UE 28b)|invoice NP Typ: Inv , stawka vat NPe//wariant VAT: [opodatkowanie UE 28b]|	VAT należny: pole 12 //VAT-UE [usługi]  |	--- |
 | eksport nie podlegający VAT                |wariant VAT: nie podlega VAT  |	VAT należny: ---   |	---|
 |---|---|---|---|
-|import usług|Typ: iusl  //  księgowość - fakturowanie: Import usług - IUSL|wariant VAT: [-- p u s t e --]// stawki: 23% ,NOV|	wg data VAT//VAT należny pole: 27, 28 |	wg data VAT// VAT naliczony pole:42, 43}|         "    |wariant VAT: [WNT Należny inny okres]| wg pola:	`data VAT`// VAT należny: 27, 28	|`data księgowania`// VAT naliczony pole: 42, 43||          "   | wariant VAT: [WNT Naliczony inny okres]|wg pola:	data księgowania//VAT należny pole: 27, 28|	`data VAT`//VAT naliczony 42, 43|
+|import usług|Typ: iusl  //  księgowość - fakturowanie: Import usług - IUSL|wariant VAT: [-- p u s t e --]// stawki: 23% ,NOV|	wg data VAT//VAT należny pole: 27, 28 |	wg data VAT// VAT naliczony pole:42, 43|         "    |wariant VAT: [WNT Należny inny okres]| wg pola:	`data VAT`// VAT należny: 27, 28	|`data księgowania`// VAT naliczony pole: 42, 43||          "   | wariant VAT: [WNT Naliczony inny okres]|wg pola:	data księgowania//VAT należny pole: 27, 28|	`data VAT`//VAT naliczony 42, 43|
 |          "   |wariant VAT: [opodatkowanie UE 28b]// 23%,OO,NOV (VAT 23%)|	wg data VAT//VAT należny pole: 29, 30| 	wg data VAT//VAT naliczony 42, 43|
 |     "        |wariant VAT: [podatek rozlicza nabywca art 17 (32)]|	VAT należny: 31, 32|   |
 |      "        |dowolny wariant VAT  [^2]|puste pole: `data VAT`|	wg `data VAT`//VAT należny: 29, 30  |  	wg `data VAT`|
-[^2]:) Dla Importu usług z zastosowaniem stawek np. oo oraz inną datą VAT należnego i naliczonego należy wprowadzić 2 dokumenty:
+
+[^2]: Dla Importu usług z zastosowaniem stawek np. oo oraz inną datą VAT należnego i naliczonego należy wprowadzić 2 dokumenty:
 1. Import usług - pozostawiając pole data VAT puste - dla VAT należnego
 2. Nabycie wewnętrzne - dla VAT naliczonego
-|import towarów|rejestr `vat od importu`, typ: FI|wariant VAT: [-- p u s t e --] 	|VAT należny: -- 	|VAT naliczony pola:42, 43|
+
+| transakcja | rejestr|pola w deklaracji| pola w deklaracji|
+|---|---|---|---|
+| import towarów |rejestr `vat od importu`, typ: FI|wariant VAT: [-- p u s t e --] 	| VAT należny: -- 	|VAT naliczony pola:42, 43|
 |        "     |wariant VAT: [import bezpośredni 33a] |	VAT należny: 25, 26  |	VAT naliczony 42, 43|
-|wewnętrzne nabycie NW|Typ: pw|wariant VAT: -- p u s t e --] 	VAT należny: -- 	VAT naliczony: 42, 43|
+|wewnętrzne nabycie NW|Typ: pw|wariant VAT: [-- p u s t e --] 	VAT należny: -- 	VAT naliczony: 42, 43|
 |Wewnątrz unijne nabycie| rejestr WNT Typ: WNT   |wariant VAT: [-- p u s t e --]|stawki:23%,NOV,ZW,(wntVatZwolnione=1) ZW,NP,//pola 23,24|VAT naliczony pola: 42, 43|
-|                |wariant VAT: [WNT inny okres]|data księgowania:data VAT/|	wg data księgowania //VAT należny: 23, 24| -- 	wg data VAT   }
+|                |wariant VAT: [WNT inny okres]|data księgowania:data VAT/|	wg data księgowania //VAT należny: 23, 24| -- 	wg data VAT   |
 |rodzaj: korekta VAT należny//ulga na złe długi|korekta opodatkowania REK//Typ: potZ//data księgowania//data VAT|(+) VAT należny 19, 20//(-) VAT należny 19, 20//podstawa 68, VAT 69|------ //------|
 |rodzaj: korekta VAT naliczony//ulga na złe długi|korekta opodatkowania REK//Typ: potZ//|-----//-----|(-) naliczony: 46//(+) naliczony: 47|
 |rodzaj: korekta deklaracji p.44 śr Trwałe|| -- |(+) naliczony: 44|
