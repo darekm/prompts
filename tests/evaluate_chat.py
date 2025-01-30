@@ -70,7 +70,7 @@ class EvaluateChat(unittest.async_case.IsolatedAsyncioTestCase):
     def eprint(self, key, s):
         self.err += f'{key}::{s}'
         self.error_fields.append(key)
-        # self.logger.error(f'Errorcheck in {self._json_name} for {key}::{s}')
+        self.logger.error(f'Errorcheck in {self._json_name} for {key}::{s}')
 
     def shortdek(self):
         def decorator(test_func):
