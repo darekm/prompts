@@ -4,9 +4,8 @@ import unittest
 import unittest.async_case
 from datetime import datetime
 
-from sqlalchemy import false
-
-from llm_chat import ChatPrompt
+import logging
+from src.llm_chat import ChatPrompt
 from src.helpers.string_helper import string2float
 
 
@@ -32,6 +31,8 @@ class EvaluateChat(unittest.async_case.IsolatedAsyncioTestCase):
         self.path = ''
         self.short = os.environ.get('SHORT', '0')
         self.error_fields = []
+        self.billed_tokens = 0
+        self.setup_debug_logger()
 
         return super().setUp()
 
@@ -45,6 +46,27 @@ class EvaluateChat(unittest.async_case.IsolatedAsyncioTestCase):
         # evaluate_ladder.store()
         pass
 
+
+    def setup_debug_logger(self):
+        # Setup a logger for debugging
+        # logging.config.fileConfig('logger.dev.ini', disable_existing_loggers=False)
+        self.logger = logging.getLogger('Prompts:')
+        self.logger.setLevel(logging.DEBUG)
+        for h in self.logger.handlers[:]:
+            self.logger.removeHandler(h)
+            h.close()
+        console_handler = logging.StreamHandler()
+        if self.debug == '2':
+            console_handler.setLevel(logging.DEBUG)
+        else:
+            console_handler.setLevel(logging.INFO)
+        console_handler.setFormatter(
+            logging.Formatter('%(asctime)s %(levelname)s - %(filename)s:%(lineno)d - %(message)s')
+        )
+        self.logger.addHandler(console_handler)
+        self.unittest = True
+        self.BLOB_SAS = os.environ.get('BLOB_SAS') or ''
+        
     def eprint(self, key, s):
         self.err += f'{key}::{s}'
         self.error_fields.append(key)
@@ -65,7 +87,7 @@ class EvaluateChat(unittest.async_case.IsolatedAsyncioTestCase):
 
     def compare(self, _left, _right) -> bool:
         if isinstance(_left, bool):
-            if _left == false and _right == '':
+            if not _left  and _right == '':
                 return True
             return _left == _right
         if isinstance(_left, float) or isinstance(_left, int):
@@ -95,55 +117,54 @@ class EvaluateChat(unittest.async_case.IsolatedAsyncioTestCase):
                 return True
         return False
 
-    def check(self, json_name, record):
+    def check(self, extension, record):
         self.err = ''
         self.error_fields = []
-        self._json_name = json_name
-        with open(f'{os.path.join(self.test_dir, self.path, json_name)}.json', 'r', encoding='utf-8') as file:
-            s = file.read()
-            filejson = json.loads(s)
-        invoice = json.loads(record['invoice'])
+        response = json.loads(record)
         count = 0
 
         errors = 0
-        self.prompt = invoice.get('prompt', '')
+        # self.prompt = response.get('prompt', '')
 
-        for key in filejson:
+        for key in extension:
             if key[0] == '_':
                 continue
             count += 1
-            good = self.check_instance(filejson[key], invoice.get(key))
+            good = self.check_instance(extension[key], response.get(key))
 
             if not good:
-                self.eprint(key, f'{filejson[key]}!={invoice.get(key)}')
+                self.eprint(key, f'{extension[key]}!={response.get(key)}')
             else:
                 errors += 1
         return errors, count
 
-    async def compute_document(self, file_name, question, extension):
-        record = ChatPrompt().extract_fk(question, extension)
-        self.dump(file_name, record)
+    async def compute_document(self, file_out, question, extension):
+        chat=ChatPrompt(self.logger)
+        record = await chat.extract_fk(question, extension)
+        self.billed_tokens+=chat.billed_tokens
+        self.dump(file_out, record)
         return record
 
-    async def check_question(self, file_name, question, extension):
+    async def check_question(self, file_name, question, answer):
         start = datetime.now()
 
         _ladder = {}
-        _ladder['file_name'] = question
-        _ladder['extension'] = extension
+        _ladder['question'] = question
+        _ladder['ground'] = answer
         self._json_name = file_name
 
         try:
-            record = await self.compute_document(file_name, question, extension)
+            self.prompt=question
+            record = await self.compute_document(f'{file_name}.out', question, {})
             _ladder['duration'] = (datetime.now() - start).total_seconds()
 
-            proper, count = self.check(file_name, record)
+            proper, count = self.check(answer, record)
             _ladder['error_fields'] = self.error_fields
             _ladder['errors'] = count - proper
             _ladder['count'] = count
             _ladder['proper'] = proper
             _ladder['prompt'] = self.prompt
-            _ladder['tokens'] = record.get('billed_tokens', 0)
+            _ladder['tokens'] = self.billed_tokens 
 
         finally:
             pass

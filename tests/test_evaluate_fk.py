@@ -15,5 +15,5 @@ class TestChatFKEvaluate(EvaluateChat):
         return
 
     @properly(False)
-    async def test_faktura_korygujaca_atman(self):
-        await self.check_question('fk.md', 'Ile godzin pracował pracownik?', {'value': 8})
+    async def test_ile_godzin(self):
+        await self.check_question('ilegodzin', 'Ile godzin pracował pracownik?', {'period': "none","genre":"data"})

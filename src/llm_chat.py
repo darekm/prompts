@@ -1,15 +1,17 @@
 import asyncio
 import json
-from datetime import datetime
+import pathlib
 
 from src.helpers.chat_connector import ChatConnector
 
+PROMPT_DIR = pathlib.Path(__file__).parent.parent
 
 class ChatPrompt:
-    def __init__(self):
+    def __init__(self,logger):
         self.model = 'openai'
-        self.logger = None
+        self.logger = logger
         self.billed_tokens = 0
+        self.path = PROMPT_DIR / 'prompt'
 
     async def completion(self, prompt, model):
         chat = ChatConnector(self.logger)
@@ -26,7 +28,7 @@ class ChatPrompt:
         return result
     
     def prompt(self,name, text):
-        with open('prompt.md', 'r') as file:
-            body = file.read()
-        return f'{body} \n####\n{text}'
+        with open(self.path / 'system_chat.md', 'r') as file:
+            body_system = file.read()
+        return f'{body_system} \n####\n{text}'
         # return MY_INVOICE_EXTRUDER_TMPL.replace('{context_str}', document) 
