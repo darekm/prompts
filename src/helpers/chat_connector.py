@@ -29,7 +29,7 @@ class ChatConnector:
         self.system_text = ' You are an expert in extraction information from given context.\n'
         'Always answer the query using the provided context information and not prior knowledge.\n'
 
-        self.initOpenAI()
+        self.initOpenAI4o()
 
     def init_model(self, model):
         if model == 'claude':
@@ -43,13 +43,15 @@ class ChatConnector:
         if model == 'o1-mini':
             self.initOpenAIo1()
         if model == '4o-mini':
-            self.initOpenAI()
+            self.initOpenAI4omini()
         if model == 'openai':
-            self.initOpenAI()
+            self.initOpenAI4o()
+        if model == 'openai4o':
+            self.initOpenAI4o()
         if model == 'phi4':
             self.initAzurePhi4()
 
-    def initOpenAI(self):
+    def initOpenAI4omini(self):
         self.api_key = os.getenv('OPENAI_API_KEY')
         if self.api_key is None:
             raise ValueError('OPENAI_API_KEY key is not set. ')
@@ -57,6 +59,15 @@ class ChatConnector:
         self.api_url = 'https://api.openai.com/v1/chat/completions'
         self.headers = {'Authorization': f'Bearer {self.api_key}', 'Content-type': 'application/json'}
         self.model = 'gpt-4o-mini'
+        self.response_format = True
+    def initOpenAI4o(self):
+        self.api_key = os.getenv('OPENAI_API_KEY')
+        if self.api_key is None:
+            raise ValueError('OPENAI_API_KEY key is not set. ')
+
+        self.api_url = 'https://api.openai.com/v1/chat/completions'
+        self.headers = {'Authorization': f'Bearer {self.api_key}', 'Content-type': 'application/json'}
+        self.model = 'gpt-4o'
         self.response_format = True
 
     def initOpenAIo1(self):

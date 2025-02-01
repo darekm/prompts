@@ -16,4 +16,10 @@ class TestChatFKEvaluate(EvaluateChat):
 
     @properly(False)
     async def test_ile_godzin(self):
-        await self.check_question('ilegodzin', 'Ile godzin pracował pracownik?', {'period': "none","genre":"data"})
+        await self.check_question(
+            'ilegodzin','place', 'Ile wykorzystano urlopu siła wyższa?', {'value': 0, 'genre': 'data'}
+        )
+
+    async def test_explain(self):
+        await self.explain_response('ilegodzin', 'value should be `unknown` but LLM response 4')
+        return

@@ -29,6 +29,7 @@ class EvaluateChat(unittest.async_case.IsolatedAsyncioTestCase):
         self.err = ''
         self.prompt = ''
         self.path = ''
+        self.debug_level= '2'
         self.short = os.environ.get('SHORT', '0')
         self.error_fields = []
         self.billed_tokens = 0
@@ -46,7 +47,6 @@ class EvaluateChat(unittest.async_case.IsolatedAsyncioTestCase):
         # evaluate_ladder.store()
         pass
 
-
     def setup_debug_logger(self):
         # Setup a logger for debugging
         # logging.config.fileConfig('logger.dev.ini', disable_existing_loggers=False)
@@ -56,7 +56,7 @@ class EvaluateChat(unittest.async_case.IsolatedAsyncioTestCase):
             self.logger.removeHandler(h)
             h.close()
         console_handler = logging.StreamHandler()
-        if self.debug == '2':
+        if self.debug_level == '2':
             console_handler.setLevel(logging.DEBUG)
         else:
             console_handler.setLevel(logging.INFO)
@@ -66,7 +66,7 @@ class EvaluateChat(unittest.async_case.IsolatedAsyncioTestCase):
         self.logger.addHandler(console_handler)
         self.unittest = True
         self.BLOB_SAS = os.environ.get('BLOB_SAS') or ''
-        
+
     def eprint(self, key, s):
         self.err += f'{key}::{s}'
         self.error_fields.append(key)
@@ -87,7 +87,7 @@ class EvaluateChat(unittest.async_case.IsolatedAsyncioTestCase):
 
     def compare(self, _left, _right) -> bool:
         if isinstance(_left, bool):
-            if not _left  and _right == '':
+            if not _left and _right == '':
                 return True
             return _left == _right
         if isinstance(_left, float) or isinstance(_left, int):
@@ -138,14 +138,25 @@ class EvaluateChat(unittest.async_case.IsolatedAsyncioTestCase):
                 errors += 1
         return errors, count
 
-    async def compute_document(self, file_out, question, extension):
-        chat=ChatPrompt(self.logger)
-        record = await chat.extract_fk(question, extension)
-        self.billed_tokens+=chat.billed_tokens
-        self.dump(file_out, record)
+    async def compute_document(self, file_out, question, variant):
+        chat = ChatPrompt(self.logger)
+        record = await chat.extract(variant,question)
+        self.billed_tokens += chat.billed_tokens
+        r={'prompt': chat.full_prompt, 'response': record}
+        self.dump(file_out, r)
         return record
+    
+    async def compute_explain(self, file_out, error):
+        with open(f'{os.path.join(self.test_dir, self.path, file_out)}.json.out', 'r') as file:
+            body=file.read
 
-    async def check_question(self, file_name, question, answer):
+        chat = ChatPrompt(self.logger)
+        record = await chat.explain(body,error)
+        self.billed_tokens += chat.billed_tokens
+        self.dump(f'{file_out}.prompt', record)
+        return record
+    
+    async def check_question(self, file_name, variant,question, answer):
         start = datetime.now()
 
         _ladder = {}
@@ -154,8 +165,8 @@ class EvaluateChat(unittest.async_case.IsolatedAsyncioTestCase):
         self._json_name = file_name
 
         try:
-            self.prompt=question
-            record = await self.compute_document(f'{file_name}.out', question, {})
+            self.prompt = question
+            record = await self.compute_document(f'{file_name}.out', question, variant)
             _ladder['duration'] = (datetime.now() - start).total_seconds()
 
             proper, count = self.check(answer, record)
@@ -164,8 +175,16 @@ class EvaluateChat(unittest.async_case.IsolatedAsyncioTestCase):
             _ladder['count'] = count
             _ladder['proper'] = proper
             _ladder['prompt'] = self.prompt
-            _ladder['tokens'] = self.billed_tokens 
+            _ladder['tokens'] = self.billed_tokens
 
         finally:
             pass
         self.assertEqual(proper, count, f' Errors in {file_name}')
+
+
+    async def explain_response(self, file_name, error):
+        record = await self.compute_explain(f'{file_name}.out', error)
+        print( record)
+        self.assertTrue(record, f' Errors in {file_name}')
+
+           
