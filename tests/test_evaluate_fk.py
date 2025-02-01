@@ -17,9 +17,14 @@ class TestChatFKEvaluate(EvaluateChat):
     @properly(False)
     async def test_ile_godzin(self):
         await self.check_question(
-            'ilegodzin','place', 'Ile wykorzystano urlopu siła wyższa?', {'value': 0, 'genre': 'data'}
+            'ilegodzin', 'place', 'Ile wykorzystano urlopu siła wyższa?', {'value': 0, 'genre': 'data'}
         )
 
     async def test_explain(self):
         await self.explain_response('ilegodzin', 'value should be `unknown` but LLM response 4')
         return
+
+    async def test_wielkosc_sprzedazy(self):
+        await self.check_question(
+            'wielkoscsprzedazy', 'vat', 'Podaj wielkość sprzedaży?', {'value': 123344.00, 'genre': 'data'}
+        )

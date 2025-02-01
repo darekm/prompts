@@ -171,6 +171,9 @@ class ChatConnector:
         if self.model == 'o1-mini':
             del json_data['temperature']
             del json_data['max_tokens']
+        if self.model == 'o3-mini':
+            del json_data['temperature']
+            del json_data['max_tokens']
         if self.model == 'Phi-4':
             json_data = {
                 'messages': messages,
@@ -258,7 +261,9 @@ class ChatConnector:
             raise ConnectorException(701, 'The generated content is too long')
         text = text['message']['content']
         if self.extract_json:
-            text = find_between(text, '```json', '```')
+            text2 = find_between(text, '```json', '```')
+            if text2:
+                text = text2
         return text
 
     def get_total_tokens(self, usage):

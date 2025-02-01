@@ -1,12 +1,4 @@
-## roczny_raport_KPR
-_   za okres 01/01/2025 - 31/01/2025_
-|   miesiąc    |   sprzedaż |pozostałe | razem      |    zakup   | koszty   | wynagro- |pozostałe |  razem   |  B + R   |  ZUS     |ubezpiecz.|liczba |
-|              |            |przychody |sprzedaż    |   towarów  | uboczne  | dzenia   | wydatki  |  koszty  |          |          |zdrowotne |zapisów|
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-|Styczeń       |            |          |            |            |          |          |          |          |          |          |          |       |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| RAZEM        |            |          |            |            |          |          |          |          |          |          |          |       |
-## syntetyka_vat
+## syntetyka_vat
 _ za okres od dnia 01/01/2025  do dnia 31/01/2025_
 |rejestr |magazyn|rodzaj|stawka|netto|vat|brutto|
 |---|---|---|---:|---:|---;|

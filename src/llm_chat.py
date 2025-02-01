@@ -8,7 +8,7 @@ PROMPT_DIR = pathlib.Path(__file__).parent.parent
 
 class ChatPrompt:
     def __init__(self, logger):
-        self.model = 'openaio3-mini'
+        self.model = 'o3-mini'
         self.logger = logger
         self.billed_tokens = 0
         self.full_prompt = ''
@@ -29,19 +29,15 @@ class ChatPrompt:
         res = await self.completion(f'{explain_prompt} {text} {result}  ', self.model)
         return res
 
-    async def extract(self, variant, text):
-        if variant == 'place':
-            return await self.extract_place(text, variant)
-        return await self.extract_fk(text)
 
     async def extract_fk(self, text):
         # self.logger.debug(f'Completion  {model}  invoice')
         result = await self.completion(self.prompt('rejestry_vat.md', text), self.model)
         return result
 
-    async def extract_place(self, text, model):
-        # self.logger.debug(f'Completion  {model}  invoice')
-        result = await self.completion(self.prompt('place', text), self.model)
+    async def extract(self, variant,text):
+        self.logger.debug(f'Completion  {self.model}  {variant}')
+        result = await self.completion(self.prompt(variant, text), self.model)
         return result
 
     def system_chat(self):
@@ -52,6 +48,10 @@ class ChatPrompt:
     def reports(self, name):
         if name == 'place':
             with open(self.path / 'place_report.md', 'r') as file:
+                reports = file.read()
+            return f'\f# **Raporty**\n{reports} '
+        if name == 'vat':
+            with open(self.path / 'vat_report.md', 'r') as file:
                 reports = file.read()
             return f'\f# **Raporty**\n{reports} '
 
