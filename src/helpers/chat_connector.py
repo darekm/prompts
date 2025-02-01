@@ -44,6 +44,8 @@ class ChatConnector:
             self.initOpenAIo1()
         if model == '4o-mini':
             self.initOpenAI4omini()
+        if model == 'o3-mini':
+            self.initOpenAIo3mini()
         if model == 'openai':
             self.initOpenAI4o()
         if model == 'openai4o':
@@ -78,6 +80,17 @@ class ChatConnector:
         self.api_url = 'https://api.openai.com/v1/chat/completions'
         self.headers = {'Authorization': f'Bearer {self.api_key}', 'Content-type': 'application/json'}
         self.model = 'o1-mini'
+        self.extract_json = True
+        self.response_format = False
+    
+    def initOpenAIo3mini(self):
+        self.api_key = os.getenv('OPENAI_API_KEY')
+        if self.api_key is None:
+            raise ValueError('OPENAI_API_KEY key is not set. ')
+
+        self.api_url = 'https://api.openai.com/v1/chat/completions'
+        self.headers = {'Authorization': f'Bearer {self.api_key}', 'Content-type': 'application/json'}
+        self.model = 'o3-mini'
         self.extract_json = True
         self.response_format = False
 

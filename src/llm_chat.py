@@ -8,7 +8,7 @@ PROMPT_DIR = pathlib.Path(__file__).parent.parent
 
 class ChatPrompt:
     def __init__(self, logger):
-        self.model = 'openai4o'
+        self.model = 'openaio3-mini'
         self.logger = logger
         self.billed_tokens = 0
         self.full_prompt = ''

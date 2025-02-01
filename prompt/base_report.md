@@ -95,12 +95,12 @@ _|  D.2 Nabycie towarów i usług podlegające rozliczeniu w miesiącu którego 
 | niepełnozatrudnieni    |      0|        0|        0|
 
 **       stan osobowy w okresie 01/01/2025  do dnia 31/01/2025**
-|stan na początku okresu |      0|
+|stan na początku okresu |      5|
 |osoby zwolnione         |      0|
 |osoby przyjęte          |      0|
-|pracujących dnia 31/01/2025|      0|
-|stan na końcu okresu    |      0|
-
+|pracujących dnia 31/01/2025|      5|
+|stan na końcu okresu    |      5|
+** rozliczenie dni i godzin w okresie 01/01/2025  do dnia 31/01/2025**
 |    |dni chorobowe płatne przez zakład                 |       3|
 |    | max dni choroby płatne przez zakład              |      28|
 |    | urlop siła wyższa przydzielony                   |       4|
