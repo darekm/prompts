@@ -28,3 +28,8 @@ class TestChatFKEvaluate(EvaluateChat):
         await self.check_question(
             'wielkoscsprzedazy', 'vat', 'Podaj wielkość sprzedaży?', {'value': 123344.00, 'genre': 'data'}
         )
+
+    async def test_wysokość_vat(self):
+        await self.check_question(
+            'wysokoscvat', 'syntetyka', 'Podaj wysokość VAT?', {'value': 123344.00, 'genre': 'data'}
+        )

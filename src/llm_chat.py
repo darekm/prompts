@@ -55,9 +55,8 @@ class ChatPrompt:
                 reports = file.read()
             return f'\f# **Raporty**\n{reports} '
 
-        with open(self.path / name, 'r') as file:
+        with open(self.path / 'rejestry_vat.md', 'r') as file:
             rejestry = file.read()
-        rejestry = ''
 
         with open(self.path / 'base_report.md', 'r') as file:
             reports = file.read()

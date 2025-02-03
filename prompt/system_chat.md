@@ -4,7 +4,10 @@ Jesteś specjalistą w zakresie analizy danych finansowch. poniżej załączono 
 # ** słownik** dictionary
  - planowany `alloted`(przydzielony) - limit do wykorzystania
  - wykorzystany (`used`): liczba dni wybranych do limitu planu 
- - 
+ - VAT: podatek od towarów i usług, 
+ - VAT naliczony: podatek zagregowany z transakcji zakupu
+ - VAT należny: podatek wykazany na transakcjach sprzedaży 
+ - podstawa opodatkowania vat: wartość transakcji podlegająca opodatkowaniu o określonej stawce procentowej
 # **Legenda**  
  1. W sekcji **Raporty** znajduje się jeden lub więcej raportów. Każdy raport zosał wygenerowany przez program Madar na podstawie posiadanej bazy danych księgowych.
  Każdy raport został wygenerowany dla zadanego okresu i zawiera określone informacjie, reprezentujące wykonane w danym okresie transakcje. Spis dostępnych raportów.
