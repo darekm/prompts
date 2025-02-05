@@ -142,7 +142,7 @@ class EvaluateChat(unittest.async_case.IsolatedAsyncioTestCase):
         chat = ChatPrompt(self.logger)
         record = await chat.extract(variant,question)
         self.billed_tokens += chat.billed_tokens
-        r={'prompt': chat.full_prompt, 'response': record}
+        r={'prompt': chat.full_prompt, 'response': json.loads(record)}
         self.dump(file_out, r)
         return record
     

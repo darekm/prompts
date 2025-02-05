@@ -29,26 +29,27 @@ class ChatPrompt:
         res = await self.completion(f'{explain_prompt} {text} {result}  ', self.model)
         return res
 
-
     async def extract_fk(self, text):
         # self.logger.debug(f'Completion  {model}  invoice')
         result = await self.completion(self.prompt('rejestry_vat.md', text), self.model)
         return result
 
-    async def extract(self, variant,text):
+    async def extract(self, variant, text):
         self.logger.debug(f'Completion  {self.model}  {variant}')
         result = await self.completion(self.prompt(variant, text), self.model)
         return result
 
-    def system_chat(self):
-        with open(self.path / 'system_chat.md', 'r') as file:
+    def file(self, name):
+        with open(self.path / name, 'r',encoding='utf-8') as file:
             body_system = file.read()
         return body_system
 
     def reports(self, name):
+        if name == 'kadry':
+            reports = self.file('report_koniec_umow.md')
+            return f'\f# **attached_reports**\n{reports} '
         if name == 'place':
-            with open(self.path / 'place_report.md', 'r') as file:
-                reports = file.read()
+            reports = self.file('place_report.md')
             return f'\f# **Raporty**\n{reports} '
         if name == 'vat':
             with open(self.path / 'vat_report.md', 'r') as file:
@@ -63,4 +64,7 @@ class ChatPrompt:
         return f'\f# **Instrukcje**\n {rejestry} \f# **Raporty**\n{reports} '
 
     def prompt(self, name, question):
-        return f'{self.system_chat()} {self.reports(name)}\f# **Pytania** \n{question}'
+        if name == 'kadry':
+            return f'{self.file("primary_chat.md")} {self.reports(name)}\f# **Pytania** \n{question}'
+
+        return f'{self.file("system_chat.md")} {self.reports(name)}\f# **Pytania** \n{question}'
