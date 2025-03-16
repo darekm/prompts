@@ -1,0 +1,12 @@
+{
+  "model_availability": {
+    "claude-3-7-sonnet": {
+      "enabled": true,
+      "preview": true,
+      "client_access": "all"
+    }
+  },
+  "default_settings": {
+    "preferred_model": "claude-3-7-sonnet"
+  }
+}
