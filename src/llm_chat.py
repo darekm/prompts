@@ -47,7 +47,9 @@ class ChatPrompt:
     def reports(self, name):
         if name == 'kadry':
             reports = self.file('report_koniec_umow.md')
-            return f'\f# **attached_reports**\n{reports} '
+            report_umpra=self.file('umpra.json')
+            report_badania = self.file('badania.json')
+            return f'\f# **attached_reports**\n{reports} ## **baza_umów_pracowniczych**\n{report_umpra} ## **baza_badań**\n{report_badania}'
         if name == 'place':
             reports = self.file('place_report.md')
             return f'\f# **Raporty**\n{reports} '
