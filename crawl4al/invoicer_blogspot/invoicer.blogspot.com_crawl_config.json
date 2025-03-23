@@ -1,0 +1,28 @@
+{
+  "name": "crawl_invoicer.blogspot.com",
+  "start_urls": [
+    "https://invoicer.blogspot.com"
+  ],
+  "allowed_domains": [
+    "invoicer.blogspot.com"
+  ],
+  "max_depth": 3,
+  "follow_redirects": true,
+  "respect_robots_txt": true,
+  "download_delay": 1,
+  "concurrent_requests": 2,
+  "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+  "output_dir": "c:\\git\\prompts\\crawl4al\\invoicer_blogspot\\crawl_data",
+  "save_html": true,
+  "extract_text": true,
+  "extract_links": true,
+  "extract_metadata": true,
+  "url_patterns": {
+    "blog_post": [
+      ".*/(19|20)\\d{2}/\\d{1,2}/[^/]+\\.html",
+      ".*/p/[^/]+\\.html",
+      ".*/blog/[^/]+",
+      ".*/posts/[^/]+"
+    ]
+  }
+}
