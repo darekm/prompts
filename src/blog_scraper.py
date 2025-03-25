@@ -219,12 +219,12 @@ class BlogScraper:
         
         # Also check for standard Blogger label classes
         if not tag_elements:
-        for label_class in ['.post-labels', '.labels', '.tags', '.categories']:
-            label_sections = soup.select(label_class)
-            for section in label_sections:
-                for link in section.find_all('a'):
-                    tag_elements.append(link)
-        
+            for label_class in ['.post-labels', '.labels', '.tags', '.categories']:
+                label_sections = soup.select(label_class)
+                for section in label_sections:
+                    for link in section.find_all('a'):
+                        tag_elements.append(link)
+            
         for tag in tag_elements:
             tag_text = tag.get_text().strip()
             if tag_text and not tag_text.startswith('http'):  # Filter out URLs

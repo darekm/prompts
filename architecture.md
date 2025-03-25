@@ -79,6 +79,21 @@ This knowledge database MVP is designed to extract, process, store, and retrieve
 - Results display
 - Document viewer
 
+#### Markdown Processor
+- **Purpose**: Parse markdown files to extract tags and generate reports
+- **Functionality**:
+  - Scan specific directories (e.g., `scraped`) for markdown files
+  - Extract tags from YAML frontmatter
+  - Aggregate tags across multiple files
+  - Generate markdown reports showing tags and their sources
+- **Input**: Directory path containing markdown files
+- **Output**: Markdown report with tag summary and source listings
+- **Report Format**:
+  - List of all unique tags found
+  - For each tag, a list of source files containing that tag
+  - Cross-references between related tags
+  - File metadata (creation date, modification date)
+
 ## Data Flow Diagram
 
 ```

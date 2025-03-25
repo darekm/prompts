@@ -1,5 +1,6 @@
 import pathlib
 from src.blog_scraper import BlogScraper
+from src.yaml_processor import YamlProcessor
 import os
 import unittest
 import logging
@@ -48,3 +49,11 @@ class TestRunScrape(unittest.TestCase):
         post_html = scraper.fetch_page(url)
         md = scraper.extract_content(post_html,url)
         self.assertTrue(md is not None)
+
+    def test_process_tags_poznajmadar(self):
+        input_directory = pathlib.Path("c:/git/prompts/scraped/poznaj_madar")
+        report = YamlProcessor.process_directory(input_directory / 'blog_posts')
+        os.makedirs(os.path.join(input_directory, "report"), exist_ok=True)
+        with open(input_directory / 'report' / 'tag-report.md', 'x', encoding='utf-8') as f:
+            f.write(report)
+
