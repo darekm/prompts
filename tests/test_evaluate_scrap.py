@@ -1,4 +1,5 @@
 import pathlib
+from src.md_embeddings import MarkdownEmbeddingGenerator
 from src.blog_scraper import BlogScraper
 from src.yaml_processor import YamlProcessor
 import os
@@ -78,3 +79,8 @@ class TestRunScrape(unittest.TestCase):
         analyzer.save_tags(definitions)
         
         
+    def test_embedding(self):
+        input_directory = pathlib.Path("c:/git/prompts/scraped/poznaj_madar")
+        generator=MarkdownEmbeddingGenerator(self.logger)
+        generator.process_directory(input_directory / 'blog_posts')
+        generator.save_embeddings_to_json(input_directory / 'report' / 'embeddings.json')
