@@ -2,9 +2,10 @@ import pathlib
 from src.blog_scraper import BlogScraper
 from src.yaml_processor import YamlProcessor
 import os
-import json
 import unittest
 import logging
+
+from src.tag_analyzer import TagAnalyzer
 
 TEST_DIR = pathlib.Path(__file__).parent
 
@@ -63,3 +64,18 @@ class TestRunScrape(unittest.TestCase):
 
     
 
+    def test_tag_analyse_poznajmadar(self):
+        input_directory = pathlib.Path("c:/git/prompts/scraped/poznaj_madar")
+        json_report_file=input_directory / 'report' / 'tag-report.json'
+        analyzer = TagAnalyzer(self.logger, json_report_file, input_directory)
+        analyzer.load_json_data()
+        
+        tags = analyzer.get_unique_tags()
+        
+        answer = analyzer.process_tag('CRM')
+        definitions={'CRM': answer}
+        output_file = analyzer.save_tags(definitions)
+        
+        self.logger.info(f"Successfully processed {len(definitions)} tags")
+        self.logger.info(f"Output saved to {output_file}")
+        

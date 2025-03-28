@@ -26,9 +26,7 @@ class ChatConnector:
         self.extract_json = False
         self.google = False
         self.client = httpx.AsyncClient()
-        self.system_text = ' You are an expert in extraction information from given context.\n'
-        'Always answer the query using the provided context information and not prior knowledge.\n'
-
+        
         self.initOpenAI4o()
 
     def init_model(self, model):
@@ -156,7 +154,6 @@ class ChatConnector:
         return self.last_text
 
     async def ask(self, user_content: str) -> str:
-        # messages = [{'role': 'system', 'content': self.system_text}, {'role': 'user', 'content': user_content}]
         messages = [{'role': 'user', 'content': user_content}]
         json_data = {'messages': messages, 'temperature': 0.01, 'max_tokens': 16000}
         if self.model:
@@ -167,7 +164,7 @@ class ChatConnector:
             json_data['response_format'] = {'type': 'json_object'}
         if self.system_role == 'external':
             json_data['messages'] = [{'role': 'user', 'content': user_content}]
-            json_data['system'] = self.system_text
+            # json_data['system'] = self.system_text
         if self.model == 'o1-mini':
             del json_data['temperature']
             del json_data['max_tokens']
@@ -183,7 +180,6 @@ class ChatConnector:
                 'max_tokens': 8192,
                 'model': 'Phi-4',
                 'repetition_penalty': 1,
-                # 'responseMimeType': 'text/plain',
             }
         if self.google:
             json_data = {
