@@ -13,8 +13,9 @@ TEST_DIR = pathlib.Path(__file__).parent
 class TestRunScrape(unittest.TestCase):
     def setUp(self) -> None:
         # Configure logging
-        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-        self.logger = logging.getLogger(__name__)
+        #logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+        self.logger = logging.getLogger('RunScrape')
+        self.logger.setLevel(logging.DEBUG)
         for h in self.logger.handlers[:]:
             self.logger.removeHandler(h)
             h.close()
@@ -72,10 +73,8 @@ class TestRunScrape(unittest.TestCase):
         
         tags = analyzer.get_unique_tags()
         
-        answer = analyzer.process_tag('CRM')
-        definitions={'CRM': answer}
-        output_file = analyzer.save_tags(definitions)
+        definition = analyzer.process_tag('CRM')
+        definitions={'CRM': definition}
+        analyzer.save_tags(definitions)
         
-        self.logger.info(f"Successfully processed {len(definitions)} tags")
-        self.logger.info(f"Output saved to {output_file}")
         

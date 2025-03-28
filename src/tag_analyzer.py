@@ -168,37 +168,42 @@ they can expect to find under this tag.
         for tag_name in tags:
             self.logger.info(f'Processing tag: {tag_name}')
             tag_definitions[tag_name] = self.process_tag(tag_name)
-     
+        
+
         return tag_definitions
-    
-    def process_tag(self, tag_name: str) -> str:
-            sources = self.get_tag_sources(tag_name)
 
-            # Extract content from the source files
-            source_content = []
-            for source in sources:
-                if 'path' in source:
-                    content = self.read_source_content(source['path'])
-                    if content:
-                        source_content.append(content)
+    def process_tag(self, tag_name: str) :
+        sources = self.get_tag_sources(tag_name)
 
-            # Generate definition
-            if source_content:
-                return self.generate_tag_definition(tag_name, source_content)
-            else:
-                self.logger.warning(f"No content found for tag '{tag_name}'")
-                return ''
+        # Extract content from the source files
+        source_content = []
+        for source in sources:
+            if 'path' in source:
+                content = self.read_source_content(source['path'])
+                if content:
+                    source_content.append(content)
 
-    
-    def save_tags(self,tag_definitions):
+        # Generate definition
+        if source_content:
+            text= self.generate_tag_definition(tag_name, source_content)
+        else:
+            self.logger.warning(f"No content found for tag '{tag_name}'")
+            text=''
+        return {
+            'tag_name': tag_name,
+            'definition': text,
+            'sources': sources
+        }
+    def save_tags(self, tag_definitions):
         for tag in tag_definitions.keys():
             self.logger.info(f'Processing tag: {tag}')
-            output_file = os.path.join(self.output_dir, 'report', f'{tag}.md')
+            output_file = os.path.join(self.output_dir,  f'{tag}.md')
             with open(output_file, 'w', encoding='utf-8') as f:
-                f.write(f"# {tag}\n\n")
-                f.write(f"## Definition\n{tag_definitions[tag]}\n\n")
-
-
+                f.write(f'# {tag}\n\n')
+                f.write(f'## Definition\n{tag_definitions[tag]['definition']}\n\n')
+                f.write('## Sources\n')
+                for source in tag_definitions[tag]['sources']:
+                    f.write(f'- {source["title"]}: [{source["path"]}]\n')
 
     def save_tags_to_json(self, tag_definitions: Dict[str, str]) -> str:
         """
@@ -226,7 +231,8 @@ they can expect to find under this tag.
             with open(output_file, 'w', encoding='utf-8') as f:
                 json.dump(output_data, f, indent=2, ensure_ascii=False)
 
-            self.logger.info(f'Tag definitions saved to {output_file}')
+            self.logger.info(f'Tag definitions processed {len(tag_definitions)}  saved to {output_file}')
+        
             return output_file
         except Exception as e:
             self.logger.error(f'Error saving tag definitions: {e}')
