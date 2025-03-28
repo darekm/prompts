@@ -7,6 +7,7 @@ Scans markdown files in a directory, extracts tags, and generates a summary repo
 import os
 import re
 import yaml
+import json
 import datetime
 from pathlib import Path
 from typing import Dict, List, Any, Optional
@@ -15,22 +16,17 @@ class YamlProcessor:
     @staticmethod
     def process_directory(directory: str) -> str:
         """
-        Process markdown files in a directory and generate a tag report
+        Process markdown files in a directory and generate a tag dictionary
         
         Args:
             directory: Directory path containing markdown files
             
-        Returns:
-            Markdown formatted report
         """
-        # Get all markdown files
-        files = YamlProcessor.get_markdown_files(directory)
-        
-        # Extract tags from each file
+        files = YamlProcessor.get_markdown_files(directory)       
         tag_map = YamlProcessor.extract_tags_from_files(files, directory)
+        return tag_map
         
-        # Generate report
-        return YamlProcessor.generate_report(tag_map)
+      
     
     @staticmethod
     def get_markdown_files(directory: str) -> List[str]:
@@ -120,7 +116,7 @@ class YamlProcessor:
         return tag_map
     
     @staticmethod
-    def generate_report(tag_map: Dict[str, List[Dict[str, str]]]) -> str:
+    def generate_yaml_report(tag_map: Dict[str, List[Dict[str, str]]]) -> str:
         """
         Generate markdown report from tag map
         
@@ -157,12 +153,51 @@ class YamlProcessor:
             report += "\n"
         
         return report
+    
+    @staticmethod
+    def generate_json_report(tag_map: Dict[str, List[Dict[str, str]]]) -> str:
+        """
+        Generate JSON report from tag map
+        
+        Args:
+            tag_map: Dictionary mapping tags to files
+            
+        Returns:
+            JSON formatted report as string
+        """
+        report = {
+            "meta": {
+                "title": "Tag Summary Report",
+                "description": "Summary of tags and their occurrences in markdown files",
+                "generated_at": datetime.datetime.now().isoformat(),
+                "total_tags": len(tag_map)
+            },
+            "tag_details": {}
+        }
+        
+        # Create summary info for each tag
+        for tag, files in tag_map.items():
+            
+            # Add detailed info for each file containing the tag
+            report["tag_details"][tag] = {
+                "count": len(files),
+                "sources": files
+            }
+        
+        # Convert to formatted JSON string
+        return json.dumps(report, indent=2)
 
 if __name__ == "__main__":
     pass
     # Example usage
-    #input_directory = os.path.join("c:\\git\\prompts", "scraped", "invoicer_blogspot")
+    # input_directory = os.path.join("c:\\git\\prompts", "scraped", "invoicer_blogspot")
     
-    #report = MarkdownProcessor.process_directory('./scraped')
-    #with open('./tag-report.md', 'w', encoding='utf-8') as f:
-    #     f.write(report)
+    # Markdown report
+    # md_report = YamlProcessor.process_directory(input_directory)
+    # with open('./tag-report.md', 'w', encoding='utf-8') as f:
+    #     f.write(md_report)
+    
+    # JSON report
+    # json_report = YamlProcessor.process_directory_json(input_directory)
+    # with open('./tag-report.json', 'w', encoding='utf-8') as f:
+    #     f.write(json_report)

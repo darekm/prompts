@@ -2,6 +2,7 @@ import pathlib
 from src.blog_scraper import BlogScraper
 from src.yaml_processor import YamlProcessor
 import os
+import json
 import unittest
 import logging
 
@@ -38,7 +39,7 @@ class TestRunScrape(unittest.TestCase):
         output_directory = os.path.join('c:\\git\\prompts', 'scraped', 'poznaj_madar')
 
         scraper = BlogScraper(self.logger, blog_url, output_directory)
-        self.assertEqual(scraper.scrape_main(), 10)
+        self.assertEqual(scraper.scrape_blog(), 10)
 
     def test_extract_content(self):
         url='https://poznajmadar.blogspot.com/2017/03/kg-ksiegowanie-do-ksiegi-gownej.html'
@@ -52,8 +53,13 @@ class TestRunScrape(unittest.TestCase):
 
     def test_process_tags_poznajmadar(self):
         input_directory = pathlib.Path("c:/git/prompts/scraped/poznaj_madar")
-        report = YamlProcessor.process_directory(input_directory / 'blog_posts')
+        map = YamlProcessor.process_directory(input_directory / 'blog_posts')
+        #report= YamlProcessor.generate_yaml_report(map)
+        report= YamlProcessor.generate_json_report(map)
+    
         os.makedirs(os.path.join(input_directory, "report"), exist_ok=True)
-        with open(input_directory / 'report' / 'tag-report.md', 'x', encoding='utf-8') as f:
+        with open(input_directory / 'report' / 'tag-report.json', 'w', encoding='utf-8') as f:
             f.write(report)
+
+    
 
