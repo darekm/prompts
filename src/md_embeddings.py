@@ -21,7 +21,7 @@ class MarkdownEmbeddingGenerator:
     def __init__(self, logger):
         # Set up logger
         self.logger = logger
-        model_type='gemini'
+        model_type='google'
         self.embeddings = {}
         
         # Initialize the embedding connector

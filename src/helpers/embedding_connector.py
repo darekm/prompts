@@ -20,11 +20,13 @@ class EmbeddingConnector:
         self.client = httpx.AsyncClient()
         
         # Default to Gemini embedding model
-        self.init_gemini()
+        self.init_gemini4()
 
     def init_model(self, model):
         if model == 'gemini' or model is None:
             self.init_gemini()
+        elif model == 'google':
+            self.init_gemini4()
         elif model == 'openai':
             self.init_openai()
         elif model == 'azure':
@@ -43,6 +45,17 @@ class EmbeddingConnector:
             'content-type': 'application/json',
         }
         self.task_type = 'SEMANTIC_SIMILARITY'
+    def init_gemini4(self):
+        self.model= 'text-embedding-004'
+        self.api_key = os.getenv('GOOGLE_API_KEY')
+        if self.api_key is None:
+            raise ValueError('GOOGLE_API_KEY is not set.')
+        
+        self.api_url = f'https://generativelanguage.googleapis.com/v1beta/models/{self.model}:embedContent?key={self.api_key}'
+        self.headers = {
+            'content-type': 'application/json',
+        }
+        self.task_type = ''
 
     def init_openai(self):
         self.model = 'text-embedding-3-small'
@@ -87,6 +100,13 @@ class EmbeddingConnector:
                     "parts": [{"text": text}]
                 },
                 "taskType": self.task_type
+            }
+        elif 'text-embedding-004' in self.model:
+            json_data = {
+                "model": f"models/{self.model}",
+                "content": {
+                    "parts": [{"text": text}]
+                },
             }
         elif 'openai' in self.api_url:
             json_data = {
