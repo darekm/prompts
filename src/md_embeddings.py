@@ -3,12 +3,17 @@ import json
 import argparse
 import yaml
 import numpy as np
+from sklearn.cluster import KMeans
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
+from collections import defaultdict
 
 from src.helpers.embedding_connector import EmbeddingConnector
 
 
 class NumpyEncoder(json.JSONEncoder):
     """Custom JSON encoder for numpy arrays"""
+
     def default(self, obj):
         if isinstance(obj, np.ndarray):
             return obj.tolist()
@@ -17,95 +22,232 @@ class NumpyEncoder(json.JSONEncoder):
 
 class MarkdownEmbeddingGenerator:
     """Class to generate embeddings for markdown files in a directory."""
-    
+
     def __init__(self, logger):
         # Set up logger
         self.logger = logger
-        model_type='google'
+        model_type = 'google'
         self.embeddings = {}
-        
+
         # Initialize the embedding connector
-        print(f"Initializing {model_type} embedding model")
+        self.logger.info(f'Initializing {model_type} embedding model')
         self.connector = EmbeddingConnector(self.logger)
         self.connector.init_model(model_type)
-    
+
     def extract_markdown_body(self, file_path: str) -> str:
         """Extract the body content from a markdown file, excluding frontmatter."""
         with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
-        
+
         # Check if the file has YAML frontmatter (between --- markers)
         if content.startswith('---'):
             parts = content.split('---', 2)
             if len(parts) >= 3:
                 # Return everything after the frontmatter
                 return parts[2].strip()
-        
+
         # If no frontmatter is detected, return the entire content
         return content.strip()
-    
-    def compute_embedding(self, text: str) :
-        """Compute embedding for the given text using the provided embedding connector."""
-        return self.connector.embed_sync(text)
-    
+
     def process_directory(self, directory_path):
         """
         Process all markdown files in the given directory, compute embeddings,
         and store them in a JSON file.
-        
+
         Args:
             directory_path: Path to directory containing markdown files
-            output_file: Path to output JSON file where embeddings will be stored
         """
         file_count = 0
-        
-        print(f"Traversing directory: {directory_path}")
+
+        self.logger.debug(f'Traversing directory: {directory_path}')
         embeddings_data = {}
-        
+
         # Walk through the directory
         for root, _, files in os.walk(directory_path):
             for file in files:
                 if file.endswith('.md'):
                     file_path = os.path.join(root, file)
                     try:
-                        print(f"Processing: {file_path}")
-                        
+                        self.logger.debug(f'Processing: {file_path}')
+
                         # Extract body content
                         body_content = self.extract_markdown_body(file_path)
                         embedding = self.connector.embed_sync(body_content)
-                        
+
                         # Store relative path and embedding
                         rel_path = os.path.relpath(file_path, directory_path)
                         embeddings_data[rel_path] = embedding
-                        
+
                         file_count += 1
                     except Exception as e:
-                        print(f"Error processing {file_path}: {str(e)}")
-        self.embeddings=embeddings_data
+                        self.logger.error(f'Error processing {file_path}: {str(e)}')
+        self.embeddings = embeddings_data
         return file_count
-        
+
     def save_embeddings_to_json(self, output_file):
-        
-        # Save embeddings to JSON file
-        print(f"Saving {len(self.embeddings)} embeddings to {output_file}")
+        """Save embeddings to JSON file."""
         with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(self.embeddings, f, cls=NumpyEncoder)
-        
-        print("Done!")
+        self.logger.info(f'Saving {len(self.embeddings)} embeddings to {output_file}')
+
+    def load_embeddings_from_json(self, input_file):
+        """Load embeddings from a JSON file."""
+        try:
+            with open(input_file, 'r', encoding='utf-8') as f:
+                self.embeddings = json.load(f)
+            return True
+        except Exception as e:
+            self.logger.error(f'Error loading embeddings: {str(e)}')
+            return False
+
+    def perform_clustering(self, n_clusters=5, random_state=42):
+        """
+        Perform K-means clustering on the document embeddings.
+
+        Args:
+            n_clusters: Number of clusters to form
+            random_state: Random seed for reproducibility
+
+        Returns:
+            Dictionary with cluster assignments
+        """
+        if not self.embeddings:
+            self.logger.error('No embeddings available for clustering')
+            raise ValueError('No embeddings available for clustering')
+
+        # Extract file names and embeddings
+        filenames = list(self.embeddings.keys())
+        embeddings_array = np.array([self.embeddings[filename] for filename in filenames])
+
+        # Perform K-means clustering
+        self.logger.info(f'Performing K-means clustering with {n_clusters} clusters')
+        kmeans = KMeans(n_clusters=n_clusters, random_state=random_state)
+        cluster_labels = kmeans.fit_predict(embeddings_array)
+
+        # Organize results by cluster
+        clusters = defaultdict(list)
+        for filename, cluster_id in zip(filenames, cluster_labels):
+            clusters[int(cluster_id)].append(filename)
+
+        return dict(clusters)
+
+    def print_clusters(self, clusters, output_file=None):
+        """
+        Print the clusters to the console and optionally save to JSON.
+
+        Args:
+            clusters: Dictionary of cluster assignments
+            output_file: Path to save the clusters as JSON (optional)
+        """
+        print('\nClustering Results:')
+
+        # Save clusters to JSON if output file is provided
+        if output_file:
+            self.logger.info(f'Saving clusters to {output_file}')
+            with open(output_file, 'w', encoding='utf-8') as f:
+                json.dump(clusters, f, indent=2)
+            self.logger.info(f'Clusters saved to {output_file}')
+
+        self.logger.info('\nDone!')
+
+    def visualize_clusters(self, clusters, output_file=None):
+        """
+        Visualize document clusters using t-SNE for dimensionality reduction.
+
+        Args:
+            clusters: Dictionary of cluster assignments
+            output_file: Path to save the visualization (optional)
+        """
+        if not self.embeddings:
+            self.logger.warning('No embeddings available for visualization')
+            return
+
+        # Extract embeddings for visualization
+        filenames = list(self.embeddings.keys())
+        embeddings_array = np.array([self.embeddings[filename] for filename in filenames])
+
+        # Map filenames to cluster ids
+        cluster_map = {}
+        for cluster_id, docs in clusters.items():
+            for doc in docs:
+                cluster_map[doc] = cluster_id
+
+        # Create cluster labels array
+        labels = np.array([cluster_map[filename] for filename in filenames])
+
+        # Reduce dimensions for visualization using t-SNE
+        self.logger.info('Reducing dimensions with t-SNE for visualization')
+        tsne = TSNE(n_components=2, random_state=42)
+        reduced_embeddings = tsne.fit_transform(embeddings_array)
+
+        # Plot the clusters
+        plt.figure(figsize=(12, 8))
+        scatter = plt.scatter(reduced_embeddings[:, 0], reduced_embeddings[:, 1], c=labels, cmap='viridis', alpha=0.7)
+
+        # Add legend
+        legend1 = plt.legend(*scatter.legend_elements(), loc='upper right', title='Clusters')
+        plt.gca().add_artist(legend1)
+
+        plt.title('Document Clusters Visualization')
+        plt.xlabel('t-SNE dimension 1')
+        plt.ylabel('t-SNE dimension 2')
+
+        if output_file:
+            plt.savefig(output_file)
+            self.logger.info(f'Visualization saved to {output_file}')
+        else:
+            plt.show()
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Generate embeddings for markdown files")
-    parser.add_argument("--directory", "-d", type=str, required=True, 
-                        help="Directory containing markdown files")
-    parser.add_argument("--output", "-o", type=str, required=True, 
-                        help="Output JSON file path")
-    parser.add_argument("--model", "-m", type=str, default="gemini",
-                        choices=["gemini", "openai", "azure"],
-                        help="Embedding model type to use (gemini, openai, or azure)")
-    
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Generate embeddings and cluster markdown files')
+    parser.add_argument('--directory', '-d', type=str, help='Directory containing markdown files')
+    parser.add_argument('--output', '-o', type=str, help='Output JSON file path for embeddings')
+    parser.add_argument(
+        '--model',
+        '-m',
+        type=str,
+        default='gemini',
+        choices=['gemini', 'openai', 'azure'],
+        help='Embedding model type to use (gemini, openai, or azure)',
+    )
+    parser.add_argument('--input', '-i', type=str, help='Input JSON file containing pre-computed embeddings')
+    parser.add_argument('--cluster', '-c', action='store_true', help='Perform clustering on the embeddings')
+    parser.add_argument('--num-clusters', '-n', type=int, default=5, help='Number of clusters for K-means (default: 5)')
+    parser.add_argument('--visualize', '-v', action='store_true', help='Visualize clusters using t-SNE')
+    parser.add_argument('--viz-output', type=str, help='Path to save visualization image')
+    parser.add_argument('--cluster-output', type=str, help='Path to save clustering results as JSON')
+
     args = parser.parse_args()
-    
-    # Create instance of the embedding generator and process the directory
-    generator = MarkdownEmbeddingGenerator(args.model)
-    generator.process_directory(args.directory, args.output)
+
+    # Configure logging
+    import logging
+
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    logger = logging.getLogger('md_embeddings')
+
+    # Create instance of the embedding generator
+    generator = MarkdownEmbeddingGenerator(logger)
+
+    # Process based on arguments
+    if args.input:
+        # Load existing embeddings
+        generator.load_embeddings_from_json(args.input)
+    elif args.directory:
+        # Generate new embeddings
+        file_count = generator.process_directory(args.directory)
+        logger.info(f'Processed {file_count} files')
+        if args.output:
+            generator.save_embeddings_to_json(args.output)
+    else:
+        if not (args.input or args.directory):
+            logger.error('Either --input or --directory must be provided')
+            parser.error('Either --input or --directory must be provided')
+
+    # Perform clustering if requested
+    if args.cluster:
+        clusters = generator.perform_clustering(n_clusters=args.num_clusters)
+        generator.print_clusters(clusters, args.cluster_output)
+
+        if args.visualize:
+            generator.visualize_clusters(clusters, args.viz_output)
