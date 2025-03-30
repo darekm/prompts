@@ -1,7 +1,7 @@
 import pathlib
 from src.md_embeddings import MarkdownEmbeddingGenerator
 from src.blog_scraper import BlogScraper
-from src.yaml_processor import TagExtractor
+from src.tag_extractor import TagExtractor
 import os
 import unittest
 import unittest.async_case
