@@ -1,7 +1,7 @@
 import pathlib
 from src.md_embeddings import MarkdownEmbeddingGenerator
 from src.blog_scraper import BlogScraper
-from src.yaml_processor import YamlProcessor
+from src.yaml_processor import TagExtractor
 import os
 import unittest
 import unittest.async_case
@@ -57,9 +57,9 @@ class TestRunScrape(unittest.async_case.IsolatedAsyncioTestCase):
 
     def test_process_tags_poznajmadar(self):
         input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')
-        map = YamlProcessor.process_directory(input_directory / 'blog_posts')
-        # report= YamlProcessor.generate_yaml_report(map)
-        report = YamlProcessor.generate_json_report(map)
+        extractor=TagExtractor(self.logger)
+        map = extractor.process_directory(input_directory / 'blog_posts')
+        report = extractor.generate_yaml_report(map)  # Changed to generate_yaml_report
 
         os.makedirs(os.path.join(input_directory, 'report'), exist_ok=True)
         with open(input_directory / 'report' / 'tag-report.json', 'w', encoding='utf-8') as f:

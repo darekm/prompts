@@ -8,53 +8,37 @@ import os
 import re
 import yaml
 import json
+import logging
 import datetime
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 
 
-class YamlProcessor:
-    @staticmethod
-    def process_directory(directory: str) -> str:
+class TagExtractor:
+    def __init__(self, logger):
         """
-        Process markdown files in a directory and generate a tag dictionary
-
-        Args:
-            directory: Directory path containing markdown files
-
+        Initialize the TagExtractor with a logger
         """
-        files = YamlProcessor.get_markdown_files(directory)
-        tag_map = YamlProcessor.extract_tags_from_files(files, directory)
+        self.logger = logger
+        self.logger.info('TagExtractor initialized')
+
+    def process_directory(self, directory):
+        self.logger.debug(f'Processing directory: {directory}')
+        files = self.get_markdown_files(directory)
+        self.logger.info(f'Found {len(files)} markdown files')
+        tag_map = self.extract_tags_from_files(files, directory)
+        self.logger.info(f'Extracted {len(tag_map)} unique tags')
         return tag_map
 
-    @staticmethod
-    def get_markdown_files(directory: str) -> List[str]:
-        """
-        Get all markdown files in a directory
-
-        Args:
-            directory: Directory to scan
-
-        Returns:
-            List of file paths
-        """
+    def get_markdown_files(self, directory: str) -> List[str]:
         try:
-            return [str(Path(directory) / f) for f in os.listdir(directory) if f.endswith('.md')]
+            files = [str(Path(directory) / f) for f in os.listdir(directory) if f.endswith('.md')]
+            return files
         except Exception as e:
-            print(f'Error reading directory {directory}: {e}')
+            self.logger.error(f'Error reading directory {directory}: {e}')
             return []
 
-    @staticmethod
-    def extract_frontmatter(content: str) -> Optional[Dict[str, Any]]:
-        """
-        Extract YAML frontmatter from markdown content
-
-        Args:
-            content: Markdown content
-
-        Returns:
-            Dictionary containing frontmatter data or None
-        """
+    def extract_frontmatter(self,content: str) -> Optional[Dict[str, Any]]:
         frontmatter_pattern = re.compile(r'^---\s*\n(.*?)\n---\s*\n', re.DOTALL)
         match = frontmatter_pattern.match(content)
 
@@ -62,12 +46,13 @@ class YamlProcessor:
             try:
                 return yaml.safe_load(match.group(1))
             except yaml.YAMLError as e:
-                print(f'Error parsing YAML frontmatter: {e}')
+                self.logger.error(f'Error parsing YAML frontmatter: {e}')
 
         return None
 
-    @staticmethod
-    def extract_tags_from_files(files: List[str], base_dir: str) -> Dict[str, List[Dict[str, str]]]:
+
+
+    def extract_tags_from_files(self, files: List[str], base_dir: str) -> Dict[str, List[Dict[str, str]]]:
         """
         Extract tags from markdown files
 
@@ -80,13 +65,15 @@ class YamlProcessor:
         """
         tag_map = {}
         base_path = Path(base_dir)
+        self.logger.info(f'Extracting tags from {len(files)} files')
 
         for file in files:
             try:
                 with open(file, 'r', encoding='utf-8') as f:
                     content = f.read()
 
-                data = YamlProcessor.extract_frontmatter(content)
+                self.logger.debug(f'Processing file: {file}')
+                data = self.extract_frontmatter(content)
                 tags = data.get('tags', []) if data else []
 
                 if not isinstance(tags, list):
@@ -106,12 +93,12 @@ class YamlProcessor:
                     tag_map[tag].append({'path': relative_path, 'title': title})
 
             except Exception as e:
-                print(f'Error processing file {file}: {e}')
+                self.logger.error(f'Error processing file {file}: {e}')
 
+        self.logger.info(f'Processed {len(files)} files, found {len(tag_map)} unique tags')
         return tag_map
 
-    @staticmethod
-    def generate_yaml_report(tag_map: Dict[str, List[Dict[str, str]]]) -> str:
+    def generate_yaml_report(self, tag_map: Dict[str, List[Dict[str, str]]]) -> str:
         """
         Generate markdown report from tag map
 
@@ -147,10 +134,10 @@ class YamlProcessor:
 
             report += '\n'
 
+        self.logger.info('YAML report generation completed')
         return report
 
-    @staticmethod
-    def generate_json_report(tag_map: Dict[str, List[Dict[str, str]]]) -> str:
+    def generate_json_report(self, tag_map: Dict[str, List[Dict[str, str]]]) -> str:
         """
         Generate JSON report from tag map
 
@@ -160,6 +147,7 @@ class YamlProcessor:
         Returns:
             JSON formatted report as string
         """
+        self.logger.info('Generating JSON report')
         report = {
             'meta': {
                 'title': 'Tag Summary Report',
@@ -175,21 +163,22 @@ class YamlProcessor:
             # Add detailed info for each file containing the tag
             report['tag_details'][tag] = {'count': len(files), 'sources': files}
 
-        # Convert to formatted JSON string
+        self.logger.info('JSON report generation completed')
         return json.dumps(report, indent=2)
 
 
 if __name__ == '__main__':
-    pass
+
     # Example usage
+    # extractor = TagExtractor()
     # input_directory = os.path.join("c:\\git\\prompts", "scraped", "invoicer_blogspot")
 
     # Markdown report
-    # md_report = YamlProcessor.process_directory(input_directory)
+    # md_report = extractor.process_directory(input_directory)
     # with open('./tag-report.md', 'w', encoding='utf-8') as f:
     #     f.write(md_report)
 
     # JSON report
-    # json_report = YamlProcessor.process_directory_json(input_directory)
+    # json_report = extractor.generate_json_report(md_report)
     # with open('./tag-report.json', 'w', encoding='utf-8') as f:
     #     f.write(json_report)
