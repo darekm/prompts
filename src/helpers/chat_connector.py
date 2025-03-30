@@ -33,7 +33,7 @@ class ChatConnector:
         if model == 'claude':
             self.initAntrophic()
         if model == 'google':
-            self.initGoogle()
+            self.initGemini15Flash()
         if model == 'together':
             self.initTogether('ll')
         if model == 'gemini':
@@ -107,7 +107,7 @@ class ChatConnector:
             'anthropic-beta': 'prompt-caching-2024-07-31',
         }
 
-    def initGoogle(self):
+    def initGemini15Flash(self):
         self.model = 'google'
         self.response_format = False
         self.api_key = os.getenv('GOOGLE_API_KEY')
@@ -122,7 +122,7 @@ class ChatConnector:
         self.response_format = False
         self.api_key = os.getenv('GOOGLE_API_KEY')
         self.google = True
-        self.api_url = f'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key={self.api_key}'
+        self.api_url = f'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={self.api_key}'
         self.headers = {
             'content-type': 'application/json',
         }

@@ -8,6 +8,7 @@ from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 from collections import defaultdict
 
+from src.helpers.chat_connector import ChatConnector
 from src.helpers.embedding_connector import EmbeddingConnector
 
 
@@ -27,18 +28,19 @@ class MarkdownEmbeddingGenerator:
         # Set up logger
         self.logger = logger
         model_type = 'google'
+        model_chat='gemini'
         self.embeddings = {}
 
         # Initialize the embedding connector
         self.logger.info(f'Initializing {model_type} embedding model')
         self.connector = EmbeddingConnector(self.logger)
         self.connector.init_model(model_type)
+        self.chat=ChatConnector(self.logger)
+        self.chat.init_model(model_chat)
 
-    def extract_markdown_body(self, file_path: str) -> str:
+    def extract_markdown_body(self, content: str) -> str:
         """Extract the body content from a markdown file, excluding frontmatter."""
-        with open(file_path, 'r', encoding='utf-8') as f:
-            content = f.read()
-
+    
         # Check if the file has YAML frontmatter (between --- markers)
         if content.startswith('---'):
             parts = content.split('---', 2)
@@ -49,7 +51,79 @@ class MarkdownEmbeddingGenerator:
         # If no frontmatter is detected, return the entire content
         return content.strip()
 
-    def process_directory(self, directory_path):
+    def extract_links(self, content: str) -> list:
+        """Extract related links from the markdown frontmatter.
+        
+        Args:
+            content: The full content of the markdown file
+            
+        Returns:
+            List of dictionaries containing link information, or empty list if none found
+        """
+        related_links = []
+        
+        # Check if the file has YAML frontmatter (between --- markers)
+        if content.startswith('---'):
+            parts = content.split('---', 2)
+            if len(parts) >= 3:
+                try:
+                    # Parse the YAML frontmatter
+                    frontmatter = yaml.safe_load(parts[1])
+                    
+                    # Extract related links if they exist
+                    if frontmatter and 'related_links' in frontmatter:
+                        related_links = frontmatter['related_links']
+                except Exception as e:
+                    self.logger.error(f'Error parsing frontmatter YAML: {str(e)}')
+        
+        return related_links
+
+    def extract_tags(self, content: str) -> list:
+        """Extract tags from the markdown frontmatter.
+        
+        Args:
+            content: The full content of the markdown file
+            
+        Returns:
+            List of tags, or empty list if none found
+        """
+        tags = []
+        
+        # Check if the file has YAML frontmatter (between --- markers)
+        if content.startswith('---'):
+            parts = content.split('---', 2)
+            if len(parts) >= 3:
+                try:
+                    # Parse the YAML frontmatter
+                    frontmatter = yaml.safe_load(parts[1])
+                    
+                    # Extract tags if they exist
+                    if frontmatter and 'tags' in frontmatter:
+                        tags = frontmatter['tags']
+                except Exception as e:
+                    self.logger.error(f'Error parsing frontmatter YAML for tags: {str(e)}')
+        
+        return tags
+    async def summarize(self, content: str) -> str:
+        """Summarize the content using the chat model."""
+        self.logger.debug('Summarizing content')
+        prompt = ('Your task is helping me to create better manual to program Madar.\n'
+                  'Given the content below, please summarize it in a concise and clear manner.\n'
+                  'Make sure to include all important information.\n'
+                  'Rules:\n'
+                    '1. Do not include any code snippets.\n'
+                    '2. Do not include any links.\n'
+                    '3. Do not include any tags.\n'
+                    '4. Do not include any frontmatter.\n'
+                    '5. Summary must be in Polish.\n'
+                    '6. Do not include any explanations.\n'
+                    '7. Length of the summary should be near 30 words.\n'                    
+                    'Please summarize the following content:\n\n'
+                  f'{content}')
+        response = await self.chat.ask(prompt)
+        return response
+
+    async def process_directory(self, directory_path):
         """
         Process all markdown files in the given directory, compute embeddings,
         and store them in a JSON file.
@@ -71,16 +145,27 @@ class MarkdownEmbeddingGenerator:
                         self.logger.debug(f'Processing: {file_path}')
 
                         # Extract body content
-                        body_content = self.extract_markdown_body(file_path)
-                        embedding = self.connector.embed_sync(body_content)
+                        with open(file_path, 'r', encoding='utf-8') as f:
+                            content = f.read()
+
+                        body_content = self.extract_markdown_body(content)
+                        related_links = self.extract_links(content)
+                        tags = self.extract_tags(content)
+                        embedding = await self.connector.embed(body_content)
+                        summary= await self.summarize(body_content)
+                        #summary = self.connector.summarize_sync(body_content)
 
                         # Store relative path and embedding
                         rel_path = os.path.relpath(file_path, directory_path)
-                        embeddings_data[rel_path] = embedding
+                        embeddings_data[rel_path] = {'embedding': embedding}  # Store embedding in a dictionary
+                        embeddings_data[rel_path]['related_links'] = related_links
+                        embeddings_data[rel_path]['tags'] = tags
+                        embeddings_data[rel_path]['summary'] = summary
 
                         file_count += 1
                     except Exception as e:
                         self.logger.error(f'Error processing {file_path}: {str(e)}')
+                        break
         self.embeddings = embeddings_data
         return file_count
 

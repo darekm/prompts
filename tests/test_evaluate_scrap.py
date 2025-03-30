@@ -4,6 +4,7 @@ from src.blog_scraper import BlogScraper
 from src.yaml_processor import YamlProcessor
 import os
 import unittest
+import unittest.async_case
 import logging
 
 from src.tag_analyzer import TagAnalyzer
@@ -11,7 +12,7 @@ from src.tag_analyzer import TagAnalyzer
 TEST_DIR = pathlib.Path(__file__).parent
 
 
-class TestRunScrape(unittest.TestCase):
+class TestRunScrape(unittest.async_case.IsolatedAsyncioTestCase):
     def setUp(self) -> None:
         # Configure logging
         # logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -76,11 +77,11 @@ class TestRunScrape(unittest.TestCase):
         definitions = {'CRM': definition}
         analyzer.save_tags(definitions)
 
-    def test_embedding(self):
+    async def test_embedding(self):
         input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')
 
         generator = MarkdownEmbeddingGenerator(self.logger)
-        generator.process_directory(input_directory / 'blog_posts')
+        await generator.process_directory(input_directory / 'blog_posts')
         generator.save_embeddings_to_json(input_directory / 'report' / 'embeddings.json')
 
     def test_clustering(self):
