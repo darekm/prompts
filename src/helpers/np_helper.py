@@ -2,6 +2,14 @@ import numpy as np
 from typing import List, Union
 
 
+def normalize_vector(vector: Union[np.ndarray, List[float]]) -> np.ndarray:
+    """Normalize a vector to unit length."""
+    norm = np.linalg.norm(vector)
+    if norm > 0:
+        return vector / norm
+    return vector
+
+
 def cosine_similarity(vec1: Union[np.ndarray, List[float]], vec2: Union[np.ndarray, List[float]]) -> float:
     """
     Calculate cosine similarity between two vectors.
@@ -13,17 +21,32 @@ def cosine_similarity(vec1: Union[np.ndarray, List[float]], vec2: Union[np.ndarr
     Returns:
         Cosine similarity value (between -1 and 1)
     """
-    # Convert lists to numpy arrays if necessary
-    if not isinstance(vec1, np.ndarray):
-        vec1 = np.array(vec1)
-    if not isinstance(vec2, np.ndarray):
-        vec2 = np.array(vec2)
-        
-    dot_product = np.dot(vec1, vec2)
-    norm_a = np.linalg.norm(vec1)
-    norm_b = np.linalg.norm(vec2)
+    # Normalize vectors
+    vec1_normalized = normalize_vector(vec1)
+    vec2_normalized = normalize_vector(vec2)
     
-    if norm_a == 0 or norm_b == 0:
-        return 0
+    # Return dot product of normalized vectors
+    return float(np.dot(vec1_normalized, vec2_normalized))
+
+
+def find_similarities(source_vector: Union[np.ndarray, List[float]], target_vectors_dict: dict) -> List[tuple]:
+    """
+    Find similarities between a source vector and a dictionary of target vectors.
+    
+    Args:
+        source_vector: The vector to compare against
+        target_vectors_dict: Dictionary of {key: vector} pairs
         
-    return dot_product / (norm_a * norm_b)
+    Returns:
+        List of tuples (key, similarity_score) sorted by similarity (highest first)
+    """
+    similarities = []
+    source_vector = np.array(source_vector)
+    
+    for key, vector in target_vectors_dict.items():
+        similarity = cosine_similarity(source_vector, np.array(vector))
+        similarities.append((key, similarity))
+    
+    # Sort by similarity (highest first)
+    similarities.sort(key=lambda x: x[1], reverse=True)
+    return similarities

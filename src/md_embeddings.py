@@ -8,8 +8,10 @@ from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 from collections import defaultdict
 
+from src.helpers.string_helper import clean_url
 from src.helpers.chat_connector import ChatConnector
 from src.helpers.embedding_connector import EmbeddingConnector
+from src.helpers.np_helper import normalize_vector, cosine_similarity
 
 
 class NumpyEncoder(json.JSONEncoder):
@@ -128,6 +130,55 @@ class MarkdownEmbeddingGenerator:
         )
         response = await self.chat.ask(prompt)
         return response
+    
+    def process_links(self,directory_path):
+        file_count = 0
+
+        self.logger.debug(f'Traversing directory: {directory_path}')
+        embeddings_data = {}
+
+        # Walk through the directory
+        for root, _, files in os.walk(directory_path):
+            for file in files:
+                if file.endswith('.md'):
+                    file_path = os.path.join(root, file)
+                    try:
+                        self.logger.debug(f'Processing: {file_path}')
+
+                        # Extract body content
+                        with open(file_path, 'r', encoding='utf-8') as f:
+                            content = f.read()
+
+                        #body_content = self.extract_markdown_body(content)
+                        related_links = self.extract_links(content)
+                        for links in related_links:
+                            links['url'] = clean_url(links['url'])
+          
+                        tags = self.extract_tags(content)
+                        source = clean_url(self.extract_source(content))
+                        #embedding = await self.connector.embed(body_content)
+                        #summary = await self.summarize(body_content)
+
+                        # Store relative path and embedding
+                        rel_path = os.path.relpath(file_path, directory_path)
+                        embeddings_data[rel_path] = {
+                            'id': rel_path,
+                            #'embedding': embedding,
+                            'related_links': related_links,
+                            'tags': tags,
+                            #'summary': summary,
+                            'source_url': source,
+                        }
+
+                        file_count += 1
+                    except Exception as e:
+                        self.logger.error(f'Error processing {file_path}: {str(e)}')
+                        break
+        self.embeddings = embeddings_data
+        self.repair_path()
+        return file_count
+
+
 
     async def process_directory(self, directory_path):
         """
@@ -157,13 +208,14 @@ class MarkdownEmbeddingGenerator:
                         body_content = self.extract_markdown_body(content)
                         related_links = self.extract_links(content)
                         tags = self.extract_tags(content)
-                        source = self.extract_source(content)
+                        source = clean_url(self.extract_source(content))
                         embedding = await self.connector.embed(body_content)
                         summary = await self.summarize(body_content)
 
                         # Store relative path and embedding
                         rel_path = os.path.relpath(file_path, directory_path)
                         embeddings_data[rel_path] = {
+                            'id': rel_path,
                             'embedding': embedding,
                             'related_links': related_links,
                             'tags': tags,
@@ -176,7 +228,21 @@ class MarkdownEmbeddingGenerator:
                         self.logger.error(f'Error processing {file_path}: {str(e)}')
                         break
         self.embeddings = embeddings_data
+        self.repair_path()
         return file_count
+
+    def repair_path(self):
+        for file_name in self.embeddings.keys():
+            file1 = self.embeddings[file_name]
+            file1['id'] = file_name
+            file1['source_url'] = clean_url(file1['source_url'])
+            for file2 in self.embeddings.values():
+            
+                for links in file2['related_links']:
+                    
+                    if file1['source_url'] == links['url']:
+                        links['path'] = file_name
+                        print(file_name)
 
     def save_embeddings_to_json(self, output_file):
         """Save embeddings to JSON file."""
@@ -312,11 +378,6 @@ class MarkdownEmbeddingGenerator:
             # Get the embedding for the current file
             embedding1 = np.array(self.embeddings[file1]['embedding'])
 
-            # Normalize the embedding
-            norm1 = np.linalg.norm(embedding1)
-            if norm1 > 0:
-                embedding1 = embedding1 / norm1
-
             # Calculate similarities with all other documents
             similarities = []
             for file2 in filenames:
@@ -326,13 +387,8 @@ class MarkdownEmbeddingGenerator:
                 # Get the embedding for the comparison file
                 embedding2 = np.array(self.embeddings[file2]['embedding'])
 
-                # Normalize the embedding
-                norm2 = np.linalg.norm(embedding2)
-                if norm2 > 0:
-                    embedding2 = embedding2 / norm2
-
                 # Calculate cosine similarity
-                similarity = float(np.dot(embedding1, embedding2))
+                similarity = cosine_similarity(embedding1, embedding2)
                 url = self.embeddings[file2]['source_url']
                 similarities.append((file2, similarity, url))
 
@@ -384,7 +440,7 @@ class MarkdownEmbeddingGenerator:
             print('  Similar documents:')
             combined_results[doc]['similar']['twins'] = []
             for twin, similarity, url in data['twins']:
-                if similarity<0.82:
+                if similarity < 0.82:
                     continue
                 _pr = self.present_in_links(doc, url)
                 print(f'    → {_pr}\t{twin} (similarity: {similarity:.4f})  {url}')
@@ -394,10 +450,10 @@ class MarkdownEmbeddingGenerator:
                     )
 
             # Process linked documents from frontmatter
-            #if doc in self.embeddings and 'related_links' in self.embeddings[doc]:
+            # if doc in self.embeddings and 'related_links' in self.embeddings[doc]:
             #    print('  Linked documents:')
             #    for link in self.embeddings[doc]['related_links']:
-            #        link_text = link.get('text', '')
+            #        link_text = link.get('text', 'No Text')
             #        link_url = link.get('url', 'No URL')
             #        print(f'    → : {link_url}')
             #        combined_results[doc]['linked'].append({'text': link_text, 'url': link_url})

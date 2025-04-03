@@ -72,3 +72,8 @@ def mask_hour(hour):
 
 def replace_tab_char(s):
     return s.replace('\u0009', ' ')
+
+def clean_url(url):
+    _url = url.replace('http://', 'https://')
+    _url = _url.split('#')[0]
+    return _url
