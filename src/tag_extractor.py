@@ -167,7 +167,6 @@ class TagExtractor:
         return json.dumps(report, indent=2)
 
 
-if __name__ == '__main__':
 
     # Example usage
     # extractor = TagExtractor()

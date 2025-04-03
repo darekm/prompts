@@ -34,7 +34,7 @@ class TagAnalyzer:
         self.embedding_model = EmbeddingConnector(logger)
         self.embedding_model.init_model('google')
         self.embedding_data = None
-        self.embeddings_file = base_dir / 'embedding.json'
+        self.embeddings_file = self.output_dir / 'embeddings.json'
 
     def load_json_data(self) -> Dict[str, Any]:
         """
@@ -269,8 +269,10 @@ they can expect to find under this tag.
 
             post_info = {
                 'id': post_id,
-                'title': post_data.get('title', 'Unknown'),
-                'path': post_data.get('path', ''),
+                #'title': post_data.get('title', 'Unknown'),
+                'source_url': post_data.get('source_url', ''),
+                'tags': post_data.get('tags', []),
+                'path': post_id,
                 'similarity': float(similarity)
             }
 
@@ -295,6 +297,7 @@ they can expect to find under this tag.
         for tag_name in tags:
             self.logger.info(f'Processing tag: {tag_name}')
             tag_definitions[tag_name] = await self.process_tag(tag_name)
+            self.store_tag( tag_definitions[tag_name])
 
         return tag_definitions
 
@@ -345,22 +348,34 @@ they can expect to find under this tag.
 
     def save_tags(self, tag_definitions):
         for tag in tag_definitions.keys():
-            self.logger.info(f'Processing tag: {tag}')
+            self.store_tag(tag_definitions[tag])
+    def _check_sources(self,source,links)->bool:
+        for link in links:
+            if source== link['path']:
+                return True
+        return False
+
+    def store_tag(self, definition: Dict[str, str]):
+            tag = definition['tag_name']
+            self.logger.info(f'Saving tag: {tag}')
             output_file = os.path.join(self.md_dir, f'{self.url_frendly(tag)}.md')
             with open(output_file, 'w', encoding='utf-8') as f:
                 f.write(f'# {tag}\n\n')
-                f.write(f'## Definition\n{tag_definitions[tag]["definition"]}\n\n')
+                f.write(f'## Definition\n{definition["definition"]}\n\n')
 
                 # Add similar posts section if available
-                if 'similar_posts' in tag_definitions[tag] and tag_definitions[tag]['similar_posts']:
+                if 'similar_posts' in definition and definition['similar_posts']:
                     f.write('## Similar Posts\n')
-                    for post in tag_definitions[tag]['similar_posts']:
+                    for post in definition['similar_posts']:
+                        if 'sources' in definition and 'id' in post:
+                            if self._check_sources(post['id'],definition['sources']):
+                               continue 
                         similarity_percentage = round(post['similarity'] * 100, 2)
-                        f.write(f"- [{post['title']}]({post['path']}) - {similarity_percentage}% similar\n")
+                        f.write(f"- ({post['id']}) - {similarity_percentage}% similar\n")
                     f.write('\n')
 
                 f.write('## Sources\n')
-                for source in tag_definitions[tag]['sources']:
+                for source in definition['sources']:
                     f.write(f'- {source["title"]}: [{source["path"]}]\n')
 
     def save_tags_to_json(self, tag_definitions: Dict[str, str]) -> str:

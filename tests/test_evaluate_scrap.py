@@ -57,13 +57,23 @@ class TestRunScrape(unittest.async_case.IsolatedAsyncioTestCase):
 
     def test_process_tags_poznajmadar(self):
         input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')
-        extractor=TagExtractor(self.logger)
+        extractor = TagExtractor(self.logger)
         map = extractor.process_directory(input_directory / 'blog_posts')
         report = extractor.generate_yaml_report(map)  # Changed to generate_yaml_report
 
         os.makedirs(os.path.join(input_directory, 'report'), exist_ok=True)
         with open(input_directory / 'report' / 'tag-report.json', 'w', encoding='utf-8') as f:
             f.write(report)
+
+    def test_repair(self):
+        input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')
+        generator = MarkdownEmbeddingGenerator(self.logger)
+
+        generator.load_embeddings_from_json(input_directory / 'report' / 'embeddings.json')
+        generator.repair_path()
+        generator.save_embeddings_to_json(input_directory / 'report' / 'embeddings.json')
+
+        self.assertTrue(True)
 
     async def test_tag_analyse_poznajmadar(self):
         input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')
@@ -74,10 +84,11 @@ class TestRunScrape(unittest.async_case.IsolatedAsyncioTestCase):
         tags = analyzer.get_unique_tags()
         analyzer.generate_contents(tags)
 
-        #definition = analyzer.process_tag('CRM')
-        #definitions = {'CRM': definition}
+        # definition = analyzer.process_tag('CRM')
+        # definitions = {'CRM': definition}
         definitions = await analyzer.process_tags(tags)
-        analyzer.save_tags(definitions)
+        with open(input_directory / 'report' / 'tag-definitions.json', 'w', encoding='utf-8') as f:
+            f.write(definitions)
 
     async def test_embedding(self):
         input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')
@@ -86,15 +97,16 @@ class TestRunScrape(unittest.async_case.IsolatedAsyncioTestCase):
         await generator.process_directory(input_directory / 'blog_posts')
         generator.save_embeddings_to_json(input_directory / 'report' / 'embeddings.json')
 
+
     def test_clustering(self):
         input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')
 
         generator = MarkdownEmbeddingGenerator(self.logger)
         generator.load_embeddings_from_json(input_directory / 'report' / 'embeddings.json')
         clusters = generator.perform_clustering(n_clusters=10)
-        generator.save(clusters, input_directory /'report'/ 'cluster.json')
+        generator.save(clusters, input_directory / 'report' / 'cluster.json')
 
-        generator.visualize_clusters(clusters, input_directory /'report'/ 'cluster')
+        generator.visualize_clusters(clusters, input_directory / 'report' / 'cluster')
         similar_docs = generator.find_similar_documents(3)
         self.assertIsNotNone(similar_docs)
         combined_documents = generator.linked_documents(similar_docs)

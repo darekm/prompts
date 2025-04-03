@@ -156,17 +156,12 @@ class MarkdownEmbeddingGenerator:
           
                         tags = self.extract_tags(content)
                         source = clean_url(self.extract_source(content))
-                        #embedding = await self.connector.embed(body_content)
-                        #summary = await self.summarize(body_content)
-
                         # Store relative path and embedding
                         rel_path = os.path.relpath(file_path, directory_path)
                         embeddings_data[rel_path] = {
                             'id': rel_path,
-                            #'embedding': embedding,
                             'related_links': related_links,
                             'tags': tags,
-                            #'summary': summary,
                             'source_url': source,
                         }
 
