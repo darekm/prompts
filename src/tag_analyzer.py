@@ -1,10 +1,13 @@
 import json
 import os
 import logging
-from typing import Dict, List, Any
+import numpy as np
+from typing import Dict, List, Any, Tuple
 from pathlib import Path
 
 from src.helpers.chat_connector import ChatConnector
+from src.helpers.embedding_connector import EmbeddingConnector
+from src.helpers.np_helper import cosine_similarity
 
 
 class TagAnalyzer:
@@ -22,11 +25,16 @@ class TagAnalyzer:
         """
         self.logger = logger
         self.json_file_path = json_file_path
+        self.md_dir = base_dir / 'md'
         self.output_dir = base_dir / 'report'
         self.data_dir = base_dir / 'blog_posts'
         self.tag_data = None
         self.model = ChatConnector(logger)
         self.model.init_model('gemini')
+        self.embedding_model = EmbeddingConnector(logger)
+        self.embedding_model.init_model('google')
+        self.embedding_data = None
+        self.embeddings_file = base_dir / 'embedding.json'
 
     def load_json_data(self) -> Dict[str, Any]:
         """
@@ -42,6 +50,27 @@ class TagAnalyzer:
         except Exception as e:
             self.logger.error(f'Error loading JSON data: {e}')
             raise
+
+    def load_embeddings(self) -> Dict[str, Any]:
+        """
+        Load embeddings from the embedding.json file.
+
+        Returns:
+            Dictionary of post embeddings
+        """
+        try:
+            if not os.path.exists(self.embeddings_file):
+                self.logger.warning(f"Embeddings file {self.embeddings_file} not found")
+                return {}
+
+            with open(self.embeddings_file, 'r', encoding='utf-8') as f:
+                self.embedding_data = json.load(f)
+
+            self.logger.info(f"Loaded embeddings for {len(self.embedding_data)} posts")
+            return self.embedding_data
+        except Exception as e:
+            self.logger.error(f"Error loading embeddings data: {e}")
+            return {}
 
     def get_unique_tags(self) -> List[str]:
         """
@@ -81,7 +110,7 @@ class TagAnalyzer:
 
         return sources
 
-    def generate_tag_definition(self, tag_name: str, source_content: List[str]) -> str:
+    async def generate_tag_definition(self, tag_name: str, source_content: List[str]) -> str:
         """
         Generate a definition for a tag using LLM.
 
@@ -95,7 +124,7 @@ class TagAnalyzer:
         prompt = self._create_definition_prompt(tag_name, source_content)
 
         try:
-            definition = self.model.ask_sync(prompt)
+            definition = await self.model.ask(prompt)
             return definition
         except Exception as e:
             self.logger.error(f"Error generating definition for tag '{tag_name}': {e}")
@@ -155,7 +184,105 @@ they can expect to find under this tag.
             self.logger.warning(f'Could not read file {full_path}: {e}')
             return ''
 
-    def process_tags(self, tags) -> Dict[str, str]:
+    def url_frendly(self, tag_name: str) -> str:
+        """
+        Convert a tag name to a URL-friendly format.
+
+        Args:
+            tag_name: The name of the tag
+
+        Returns:
+            URL-friendly string
+        """
+        import re
+        # Convert to lowercase
+        result = tag_name.lower()
+        # Replace polish characters
+        polish_chars = {
+            'ą': 'a', 'ć': 'c', 'ę': 'e', 'ł': 'l', 'ń': 'n',
+            'ó': 'o', 'ś': 's', 'ź': 'z', 'ż': 'z'
+        }
+        for pol, eng in polish_chars.items():
+            result = result.replace(pol, eng)
+        # Replace spaces with hyphens
+        result = result.replace(' ', '-')
+        # Remove any non-alphanumeric characters (except hyphens)
+        result = re.sub(r'[^a-z0-9-]', '', result)
+        # Replace multiple hyphens with single hyphen
+        result = re.sub(r'-+', '-', result)
+        # Remove leading and trailing hyphens
+        result = result.strip('-')
+
+        return result
+
+    def generate_contents(self, tags: List[str]) -> str:
+        """
+        Generate a table of contents (spis tresci) in markdown format for the given tags.
+
+        Args:
+            tags: List of tag names
+
+        Returns:
+            A markdown string representing the table of contents
+        """
+
+        contents = '# Spis Treści\n\n'
+        for tag in tags:
+            contents += f'- [{tag}](./{self.url_frendly(tag)}.html)\n'
+        output_file = os.path.join(self.md_dir, 'content.md')
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write(contents)
+
+        return contents
+
+    def find_similar_posts(self, embedding: List[float], n: int = 5) -> List[Dict[str, Any]]:
+        """
+        Find the n most similar posts to the given embedding using cosine similarity.
+
+        Args:
+            embedding: The embedding vector to compare against
+            n: Number of similar posts to return
+
+        Returns:
+            List of the n most similar posts with similarity scores
+        """
+        if not self.embedding_data:
+            self.load_embeddings()
+
+        if not self.embedding_data or not embedding:
+            return []
+
+        similarities = []
+
+        # Convert the tag embedding to a numpy array
+        tag_embedding = np.array(embedding)
+
+        # Calculate cosine similarity for each post embedding
+        for post_id, post_data in self.embedding_data.items():
+            if 'embedding' not in post_data or not post_data['embedding']:
+                continue
+
+            post_embedding = np.array(post_data['embedding'])
+
+            # Calculate cosine similarity using the imported function
+            similarity = cosine_similarity(tag_embedding, post_embedding)
+
+            post_info = {
+                'id': post_id,
+                'title': post_data.get('title', 'Unknown'),
+                'path': post_data.get('path', ''),
+                'similarity': float(similarity)
+            }
+
+            similarities.append(post_info)
+
+        # Sort by similarity (descending)
+        sorted_similarities = sorted(similarities, key=lambda x: x['similarity'], reverse=True)
+
+        # Return the top n results
+        return sorted_similarities[:n]
+
+    async def process_tags(self, tags) -> Dict[str, str]:
         """
         Process all tags and generate definitions.
 
@@ -167,12 +294,11 @@ they can expect to find under this tag.
 
         for tag_name in tags:
             self.logger.info(f'Processing tag: {tag_name}')
-            tag_definitions[tag_name] = self.process_tag(tag_name)
-        
+            tag_definitions[tag_name] = await self.process_tag(tag_name)
 
         return tag_definitions
 
-    def process_tag(self, tag_name: str) :
+    async def process_tag(self, tag_name: str):
         sources = self.get_tag_sources(tag_name)
 
         # Extract content from the source files
@@ -184,23 +310,55 @@ they can expect to find under this tag.
                     source_content.append(content)
 
         # Generate definition
+        text = ''
+        embedding = None
+        similar_posts = []
+
         if source_content:
-            text= self.generate_tag_definition(tag_name, source_content)
+            text = await self.generate_tag_definition(tag_name, source_content)
+
+            # Compute embedding for the definition
+            if text:
+                try:
+                    self.logger.info(f"Computing embedding for tag '{tag_name}'")
+                    embedding = await self.embedding_model.embed(text)
+
+                    # Find similar posts
+                    if embedding:
+                        self.logger.info(f"Finding similar posts for tag '{tag_name}'")
+                        similar_posts = self.find_similar_posts(embedding)
+                        self.logger.info(f"Found {len(similar_posts)} similar posts for tag '{tag_name}'")
+
+                except Exception as e:
+                    self.logger.error(f"Error computing embedding for tag '{tag_name}': {e}")
+                    embedding = None
         else:
             self.logger.warning(f"No content found for tag '{tag_name}'")
-            text=''
+
         return {
             'tag_name': tag_name,
             'definition': text,
-            'sources': sources
+            'sources': sources,
+            'embedding': embedding,
+            'similar_posts': similar_posts
         }
+
     def save_tags(self, tag_definitions):
         for tag in tag_definitions.keys():
             self.logger.info(f'Processing tag: {tag}')
-            output_file = os.path.join(self.output_dir,  f'{tag}.md')
+            output_file = os.path.join(self.md_dir, f'{self.url_frendly(tag)}.md')
             with open(output_file, 'w', encoding='utf-8') as f:
                 f.write(f'# {tag}\n\n')
-                f.write(f'## Definition\n{tag_definitions[tag]['definition']}\n\n')
+                f.write(f'## Definition\n{tag_definitions[tag]["definition"]}\n\n')
+
+                # Add similar posts section if available
+                if 'similar_posts' in tag_definitions[tag] and tag_definitions[tag]['similar_posts']:
+                    f.write('## Similar Posts\n')
+                    for post in tag_definitions[tag]['similar_posts']:
+                        similarity_percentage = round(post['similarity'] * 100, 2)
+                        f.write(f"- [{post['title']}]({post['path']}) - {similarity_percentage}% similar\n")
+                    f.write('\n')
+
                 f.write('## Sources\n')
                 for source in tag_definitions[tag]['sources']:
                     f.write(f'- {source["title"]}: [{source["path"]}]\n')
@@ -232,7 +390,7 @@ they can expect to find under this tag.
                 json.dump(output_data, f, indent=2, ensure_ascii=False)
 
             self.logger.info(f'Tag definitions processed {len(tag_definitions)}  saved to {output_file}')
-        
+
             return output_file
         except Exception as e:
             self.logger.error(f'Error saving tag definitions: {e}')

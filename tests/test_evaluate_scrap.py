@@ -65,16 +65,18 @@ class TestRunScrape(unittest.async_case.IsolatedAsyncioTestCase):
         with open(input_directory / 'report' / 'tag-report.json', 'w', encoding='utf-8') as f:
             f.write(report)
 
-    def test_tag_analyse_poznajmadar(self):
+    async def test_tag_analyse_poznajmadar(self):
         input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')
         json_report_file = input_directory / 'report' / 'tag-report.json'
         analyzer = TagAnalyzer(self.logger, json_report_file, input_directory)
         analyzer.load_json_data()
 
         tags = analyzer.get_unique_tags()
+        analyzer.generate_contents(tags)
 
-        definition = analyzer.process_tag('CRM')
-        definitions = {'CRM': definition}
+        #definition = analyzer.process_tag('CRM')
+        #definitions = {'CRM': definition}
+        definitions = await analyzer.process_tags(tags)
         analyzer.save_tags(definitions)
 
     async def test_embedding(self):
@@ -90,6 +92,10 @@ class TestRunScrape(unittest.async_case.IsolatedAsyncioTestCase):
         generator = MarkdownEmbeddingGenerator(self.logger)
         generator.load_embeddings_from_json(input_directory / 'report' / 'embeddings.json')
         clusters = generator.perform_clustering(n_clusters=10)
-        generator.print_clusters(clusters, input_directory /'report'/ 'cluster.json')
+        generator.save(clusters, input_directory /'report'/ 'cluster.json')
 
         generator.visualize_clusters(clusters, input_directory /'report'/ 'cluster')
+        similar_docs = generator.find_similar_documents(3)
+        self.assertIsNotNone(similar_docs)
+        combined_documents = generator.linked_documents(similar_docs)
+        generator.save(combined_documents, input_directory / 'report' / 'linked.json')
