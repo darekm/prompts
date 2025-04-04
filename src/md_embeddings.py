@@ -11,16 +11,9 @@ from collections import defaultdict
 from src.helpers.string_helper import clean_url
 from src.helpers.chat_connector import ChatConnector
 from src.helpers.embedding_connector import EmbeddingConnector
-from src.helpers.np_helper import normalize_vector, cosine_similarity
+from src.helpers.np_helper import normalize_vector, cosine_similarity,save_json
 
 
-class NumpyEncoder(json.JSONEncoder):
-    """Custom JSON encoder for numpy arrays"""
-
-    def default(self, obj):
-        if isinstance(obj, np.ndarray):
-            return obj.tolist()
-        return json.JSONEncoder.default(self, obj)
 
 
 class MarkdownEmbeddingGenerator:
@@ -240,9 +233,7 @@ class MarkdownEmbeddingGenerator:
                         print(file_name)
 
     def save_embeddings_to_json(self, output_file):
-        """Save embeddings to JSON file."""
-        with open(output_file, 'w', encoding='utf-8') as f:
-            json.dump(self.embeddings, f, cls=NumpyEncoder)
+        save_json(self.embeddings,output_file)
         self.logger.info(f'Saving {len(self.embeddings)} embeddings to {output_file}')
 
     def load_embeddings_from_json(self, input_file):
@@ -297,8 +288,7 @@ class MarkdownEmbeddingGenerator:
 
         # Save clusters to JSON if output file is provided
         if output_file:
-            with open(output_file, 'w', encoding='utf-8') as f:
-                json.dump(clusters, f, indent=2)
+            save_json(clusters, output_file)
             self.logger.info(f'Saved to {output_file}')
 
     def visualize_clusters(self, clusters, output_file=None):

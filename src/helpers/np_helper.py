@@ -1,5 +1,21 @@
 import numpy as np
 from typing import List, Union
+import json
+
+
+class NumpyEncoder(json.JSONEncoder):
+    """Custom JSON encoder for numpy arrays"""
+
+    def default(self, obj):
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return json.JSONEncoder.default(self, obj)
+
+
+def save_json(self, dictionary, output_file):
+    """Save a dictionary to a JSON file."""
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(dictionary, f, cls=NumpyEncoder)
 
 
 def normalize_vector(vector: Union[np.ndarray, List[float]]) -> np.ndarray:

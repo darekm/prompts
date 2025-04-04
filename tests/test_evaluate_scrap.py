@@ -1,4 +1,5 @@
 import pathlib
+from src.helpers.np_helper import save_json
 from src.md_embeddings import MarkdownEmbeddingGenerator
 from src.blog_scraper import BlogScraper
 from src.tag_extractor import TagExtractor
@@ -77,9 +78,8 @@ class TestRunScrape(unittest.async_case.IsolatedAsyncioTestCase):
 
     async def test_tag_analyse_poznajmadar(self):
         input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')
-        json_report_file = input_directory / 'report' / 'tag-report.json'
-        analyzer = TagAnalyzer(self.logger, json_report_file, input_directory)
-        analyzer.load_json_data()
+        analyzer = TagAnalyzer(self.logger,  input_directory)
+        analyzer.load_json_report()
 
         tags = analyzer.get_unique_tags()
         analyzer.generate_contents(tags)
@@ -87,8 +87,7 @@ class TestRunScrape(unittest.async_case.IsolatedAsyncioTestCase):
         # definition = analyzer.process_tag('CRM')
         # definitions = {'CRM': definition}
         definitions = await analyzer.process_tags(tags)
-        with open(input_directory / 'report' / 'tag-definitions.json', 'w', encoding='utf-8') as f:
-            f.write(definitions)
+        save_json(definitions, input_directory / 'report' / 'tag-definitions.json')
 
     async def test_embedding(self):
         input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')

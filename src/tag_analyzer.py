@@ -13,7 +13,7 @@ from src.helpers.np_helper import cosine_similarity
 class TagAnalyzer:
     """Class for analyzing tags from blog post data and generating definitions."""
 
-    def __init__(self, logger: logging.Logger, json_file_path: Path, base_dir: Path):
+    def __init__(self, logger: logging.Logger, base_dir: Path):
         """
         Initialize the TagAnalyzer.
 
@@ -24,7 +24,6 @@ class TagAnalyzer:
             api_key: API key for the LLM service (optional)
         """
         self.logger = logger
-        self.json_file_path = json_file_path
         self.md_dir = base_dir / 'md'
         self.output_dir = base_dir / 'report'
         self.data_dir = base_dir / 'blog_posts'
@@ -36,15 +35,19 @@ class TagAnalyzer:
         self.embedding_data = None
         self.embeddings_file = self.output_dir / 'embeddings.json'
 
-    def load_json_data(self) -> Dict[str, Any]:
+    def load_json_report(self) -> Dict[str, Any]:
         """
         Load the JSON data from the file.
 
         Returns:
             The loaded JSON data
         """
+        if not self.embedding_data:
+            self.load_embeddings()
+
+        file_path = self.output_dir / 'tag-report.json'
         try:
-            with open(self.json_file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, 'r', encoding='utf-8') as f:
                 self.tag_data = json.load(f)
             return self.tag_data
         except Exception as e:
@@ -60,16 +63,16 @@ class TagAnalyzer:
         """
         try:
             if not os.path.exists(self.embeddings_file):
-                self.logger.warning(f"Embeddings file {self.embeddings_file} not found")
+                self.logger.warning(f'Embeddings file {self.embeddings_file} not found')
                 return {}
 
             with open(self.embeddings_file, 'r', encoding='utf-8') as f:
                 self.embedding_data = json.load(f)
 
-            self.logger.info(f"Loaded embeddings for {len(self.embedding_data)} posts")
+            self.logger.info(f'Loaded embeddings for {len(self.embedding_data)} posts')
             return self.embedding_data
         except Exception as e:
-            self.logger.error(f"Error loading embeddings data: {e}")
+            self.logger.error(f'Error loading embeddings data: {e}')
             return {}
 
     def get_unique_tags(self) -> List[str]:
@@ -79,8 +82,6 @@ class TagAnalyzer:
         Returns:
             List of unique tag names
         """
-        if not self.tag_data:
-            self.load_json_data()
 
         tags = []
         if 'tag_details' in self.tag_data:
@@ -102,12 +103,13 @@ class TagAnalyzer:
             List of source dictionaries containing path and title
         """
         if not self.tag_data:
-            self.load_json_data()
+            self.load_json_report()
 
         sources = []
         if 'tag_details' in self.tag_data and tag_name in self.tag_data['tag_details']:
             sources = self.tag_data['tag_details'][tag_name].get('sources', [])
-
+        for file in sources:
+            file['source_url'] = self.embedding_data[file['path']].get('source_url', '')
         return sources
 
     async def generate_tag_definition(self, tag_name: str, source_content: List[str]) -> str:
@@ -195,13 +197,11 @@ they can expect to find under this tag.
             URL-friendly string
         """
         import re
+
         # Convert to lowercase
         result = tag_name.lower()
         # Replace polish characters
-        polish_chars = {
-            'ą': 'a', 'ć': 'c', 'ę': 'e', 'ł': 'l', 'ń': 'n',
-            'ó': 'o', 'ś': 's', 'ź': 'z', 'ż': 'z'
-        }
+        polish_chars = {'ą': 'a', 'ć': 'c', 'ę': 'e', 'ł': 'l', 'ń': 'n', 'ó': 'o', 'ś': 's', 'ź': 'z', 'ż': 'z'}
         for pol, eng in polish_chars.items():
             result = result.replace(pol, eng)
         # Replace spaces with hyphens
@@ -246,8 +246,6 @@ they can expect to find under this tag.
         Returns:
             List of the n most similar posts with similarity scores
         """
-        if not self.embedding_data:
-            self.load_embeddings()
 
         if not self.embedding_data or not embedding:
             return []
@@ -273,7 +271,7 @@ they can expect to find under this tag.
                 'source_url': post_data.get('source_url', ''),
                 'tags': post_data.get('tags', []),
                 'path': post_id,
-                'similarity': float(similarity)
+                'similarity': float(similarity),
             }
 
             similarities.append(post_info)
@@ -297,7 +295,7 @@ they can expect to find under this tag.
         for tag_name in tags:
             self.logger.info(f'Processing tag: {tag_name}')
             tag_definitions[tag_name] = await self.process_tag(tag_name)
-            self.store_tag( tag_definitions[tag_name])
+            self.store_tag(tag_definitions[tag_name])
 
         return tag_definitions
 
@@ -343,40 +341,44 @@ they can expect to find under this tag.
             'definition': text,
             'sources': sources,
             'embedding': embedding,
-            'similar_posts': similar_posts
+            'similar_posts': similar_posts,
         }
 
     def save_tags(self, tag_definitions):
         for tag in tag_definitions.keys():
             self.store_tag(tag_definitions[tag])
-    def _check_sources(self,source,links)->bool:
+
+    def _check_sources(self, source, links) -> bool:
         for link in links:
-            if source== link['path']:
+            if source == link['path']:
                 return True
         return False
 
     def store_tag(self, definition: Dict[str, str]):
-            tag = definition['tag_name']
-            self.logger.info(f'Saving tag: {tag}')
-            output_file = os.path.join(self.md_dir, f'{self.url_frendly(tag)}.md')
-            with open(output_file, 'w', encoding='utf-8') as f:
-                f.write(f'# {tag}\n\n')
-                f.write(f'## Definition\n{definition["definition"]}\n\n')
+        tag = definition['tag_name']
+        self.logger.info(f'Saving tag: {tag}')
+        output_file = os.path.join(self.md_dir, f'{self.url_frendly(tag)}.md')
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write(f'# {tag}\n\n')
+            f.write(f'## Definition\n{definition["definition"]}\n\n')
 
-                # Add similar posts section if available
-                if 'similar_posts' in definition and definition['similar_posts']:
-                    f.write('## Similar Posts\n')
-                    for post in definition['similar_posts']:
-                        if 'sources' in definition and 'id' in post:
-                            if self._check_sources(post['id'],definition['sources']):
-                               continue 
-                        similarity_percentage = round(post['similarity'] * 100, 2)
-                        f.write(f"- ({post['id']}) - {similarity_percentage}% similar\n")
-                    f.write('\n')
+            # Add similar posts section if available
+            if 'similar_posts' in definition and definition['similar_posts'] and (len(definition['sources']) < 8):
+                f.write('## Similar Posts\n')
+                for post in definition['similar_posts']:
+                    if post['similarity'] < 0.83:
+                        continue
+                    if 'sources' in definition and 'id' in post:
+                        if self._check_sources(post['id'], definition['sources']):
+                            continue
 
-                f.write('## Sources\n')
-                for source in definition['sources']:
-                    f.write(f'- {source["title"]}: [{source["path"]}]\n')
+                    similarity_percentage = round(post['similarity'] * 100, 2)
+                    f.write(f'- ({post["id"]}) - {similarity_percentage}% [similar]( {post["source_url"]})\n  ')
+                f.write('\n')
+
+            f.write('## Sources\n')
+            for source in definition['sources']:
+                f.write(f'- [{source["title"]}]({source["source_url"]})\n')
 
     def save_tags_to_json(self, tag_definitions: Dict[str, str]) -> str:
         """
