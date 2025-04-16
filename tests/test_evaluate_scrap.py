@@ -1,4 +1,5 @@
 import pathlib
+from src.content_enhancer import ContentEnhancer
 from src.helpers.np_helper import save_json
 from src.md_embeddings import MarkdownEmbeddingGenerator
 from src.blog_scraper import BlogScraper
@@ -110,3 +111,9 @@ class TestRunScrape(unittest.async_case.IsolatedAsyncioTestCase):
         self.assertIsNotNone(similar_docs)
         combined_documents = generator.linked_documents(similar_docs)
         generator.save(combined_documents, input_directory / 'report' / 'linked.json')
+    
+    def test_content_enhancer(self):
+        input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')
+        generator = ContentEnhancer(self.logger, input_directory)
+        generator.process_files()
+        self.assertTrue(True)
