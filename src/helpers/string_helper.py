@@ -77,3 +77,33 @@ def clean_url(url):
     _url = url.replace('http://', 'https://')
     _url = _url.split('#')[0]
     return _url
+
+
+def url_frendly( tag_name: str) -> str:
+        """
+        Convert a tag name to a URL-friendly format.
+
+        Args:
+            tag_name: The name of the tag
+
+        Returns:
+            URL-friendly string
+        """
+        import re
+
+        # Convert to lowercase
+        result = tag_name.lower()
+        # Replace polish characters
+        polish_chars = {'ą': 'a', 'ć': 'c', 'ę': 'e', 'ł': 'l', 'ń': 'n', 'ó': 'o', 'ś': 's', 'ź': 'z', 'ż': 'z'}
+        for pol, eng in polish_chars.items():
+            result = result.replace(pol, eng)
+        # Replace spaces with hyphens
+        result = result.replace(' ', '-')
+        # Remove any non-alphanumeric characters (except hyphens)
+        result = re.sub(r'[^a-z0-9-]', '', result)
+        # Replace multiple hyphens with single hyphen
+        result = re.sub(r'-+', '-', result)
+        # Remove leading and trailing hyphens
+        result = result.strip('-')
+
+        return result

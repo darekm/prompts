@@ -12,7 +12,7 @@ class NumpyEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-def save_json(self, dictionary, output_file):
+def save_json(dictionary, output_file):
     """Save a dictionary to a JSON file."""
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(dictionary, f, cls=NumpyEncoder)
@@ -22,7 +22,7 @@ def normalize_vector(vector: Union[np.ndarray, List[float]]) -> np.ndarray:
     """Normalize a vector to unit length."""
     norm = np.linalg.norm(vector)
     if norm > 0:
-        return vector / norm
+        vector = vector / norm
     return vector
 
 

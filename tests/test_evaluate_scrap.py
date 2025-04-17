@@ -80,7 +80,7 @@ class TestRunScrape(unittest.async_case.IsolatedAsyncioTestCase):
     async def test_tag_analyse_poznajmadar(self):
         input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')
         analyzer = TagAnalyzer(self.logger,  input_directory)
-        analyzer.load_json_report()
+        analyzer.load_tag_report()
 
         tags = analyzer.get_unique_tags()
         analyzer.generate_contents(tags)
