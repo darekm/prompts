@@ -5,7 +5,6 @@ from src.md_embeddings import MarkdownEmbeddingGenerator
 from src.blog_scraper import BlogScraper
 from src.tag_extractor import TagExtractor
 from src.md_clustering import ContentClustering
-from src.helpers.np_helper import save_json
 import os
 import unittest
 import unittest.async_case
@@ -69,19 +68,9 @@ class TestRunScrape(unittest.async_case.IsolatedAsyncioTestCase):
         with open(input_directory / 'report' / 'tag-report.json', 'w', encoding='utf-8') as f:
             f.write(report)
 
-    def test_repair(self):
-        input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')
-        generator = MarkdownEmbeddingGenerator(self.logger)
-
-        generator.load_embeddings_from_json(input_directory / 'report' / 'embeddings.json')
-        generator.repair_path()
-        generator.save_embeddings_to_json(input_directory / 'report' / 'embeddings.json')
-
-        self.assertTrue(True)
-
     async def test_tag_analyse_poznajmadar(self):
         input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')
-        analyzer = TagAnalyzer(self.logger,  input_directory)
+        analyzer = TagAnalyzer(self.logger, input_directory)
         analyzer.load_tag_report()
 
         tags = analyzer.get_unique_tags()
@@ -99,7 +88,6 @@ class TestRunScrape(unittest.async_case.IsolatedAsyncioTestCase):
         await generator.process_directory(input_directory / 'blog_posts')
         generator.save_embeddings_to_json(input_directory / 'report' / 'embeddings.json')
 
-
     def test_clustering(self):
         input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')
 
@@ -109,15 +97,14 @@ class TestRunScrape(unittest.async_case.IsolatedAsyncioTestCase):
         save_json(clusters, input_directory / 'report' / 'cluster.json')
 
         generator.visualize_clusters(clusters, input_directory / 'report' / 'cluster')
-        
-         
+
         similar_docs = generator.find_similar_documents(3)
         self.assertIsNotNone(similar_docs)
         combined_documents = generator.linked_documents(similar_docs)
         save_json(combined_documents, input_directory / 'report' / 'linked.json')
-    
-    def test_content_enhancer(self):
+
+    async def test_content_enhancer(self):
         input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')
         generator = ContentEnhancer(self.logger, input_directory)
-        generator.process_files()
+        await generator.process_files()
         self.assertTrue(True)

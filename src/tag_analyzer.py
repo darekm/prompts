@@ -86,8 +86,11 @@ class TagAnalyzer:
         """
         if not self.tag_data:
             self.load_tag_report()
+        
 
         sources = []
+        if not self.tag_data:
+            return sources
         if 'tag_details' in self.tag_data and tag_name in self.tag_data['tag_details']:
             sources = self.tag_data['tag_details'][tag_name].get('sources', [])
         for file in sources:

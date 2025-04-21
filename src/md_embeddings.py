@@ -1,13 +1,11 @@
 import os
-import json
 import argparse
 import yaml
-import numpy as np
 
 from src.helpers.string_helper import clean_url
 from src.helpers.chat_connector import ChatConnector
 from src.helpers.embedding_connector import EmbeddingConnector
-from src.helpers.np_helper import normalize_vector, cosine_similarity, save_json
+from src.helpers.np_helper import  save_json
 
 
 class MarkdownEmbeddingGenerator:

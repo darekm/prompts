@@ -5,7 +5,7 @@ from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 from collections import defaultdict
 
-from src.helpers.np_helper import normalize_vector, cosine_similarity,save_json
+from src.helpers.np_helper import  cosine_similarity
 
 
 class ContentClustering:
