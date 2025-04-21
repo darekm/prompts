@@ -4,6 +4,8 @@ from src.helpers.np_helper import save_json
 from src.md_embeddings import MarkdownEmbeddingGenerator
 from src.blog_scraper import BlogScraper
 from src.tag_extractor import TagExtractor
+from src.md_clustering import ContentClustering
+from src.helpers.np_helper import save_json
 import os
 import unittest
 import unittest.async_case
@@ -101,16 +103,18 @@ class TestRunScrape(unittest.async_case.IsolatedAsyncioTestCase):
     def test_clustering(self):
         input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')
 
-        generator = MarkdownEmbeddingGenerator(self.logger)
+        generator = ContentClustering(self.logger)
         generator.load_embeddings_from_json(input_directory / 'report' / 'embeddings.json')
         clusters = generator.perform_clustering(n_clusters=10)
-        generator.save(clusters, input_directory / 'report' / 'cluster.json')
+        save_json(clusters, input_directory / 'report' / 'cluster.json')
 
         generator.visualize_clusters(clusters, input_directory / 'report' / 'cluster')
+        
+         
         similar_docs = generator.find_similar_documents(3)
         self.assertIsNotNone(similar_docs)
         combined_documents = generator.linked_documents(similar_docs)
-        generator.save(combined_documents, input_directory / 'report' / 'linked.json')
+        save_json(combined_documents, input_directory / 'report' / 'linked.json')
     
     def test_content_enhancer(self):
         input_directory = pathlib.Path('c:/git/prompts/scraped/poznaj_madar')

@@ -5,7 +5,7 @@ import numpy as np
 from typing import Dict, List, Any
 from pathlib import Path
 
-from helpers.string_helper import url_frendly
+from src.helpers.string_helper import url_frendly
 from src.helpers.chat_connector import ChatConnector
 from src.helpers.embedding_connector import EmbeddingConnector
 from src.helpers.np_helper import cosine_similarity
@@ -20,9 +20,7 @@ class TagAnalyzer:
 
         Args:
             logger: Logger for logging information
-            json_file_path: Path to the JSON file containing tag data
-            output_dir: Directory to save the output files
-            api_key: API key for the LLM service (optional)
+            base_dir: Base directory for the blog posts and reports
         """
         self.logger = logger
         self.md_dir = base_dir / 'md'
@@ -33,11 +31,10 @@ class TagAnalyzer:
         self.model.init_model('gemini')
         self.embedding_model = EmbeddingConnector(logger)
         self.embedding_model.init_model('google')
-        self.embedding_data = None
-        self.embeddings_file = self.output_dir / 'embeddings.json'
+        self.embeddings = None
 
     def load_tag_report(self) -> Dict[str, Any]:
-        if not self.embedding_data:
+        if not self.embeddings:
             self.load_embeddings()
 
         file_path = self.output_dir / 'tag-report.json'
@@ -49,22 +46,16 @@ class TagAnalyzer:
             self.logger.error(f'Error loading JSON data: {e}')
             raise
 
-    def load_embeddings(self) -> Dict[str, Any]:
-        """
-        Load embeddings from the embedding.json file.
-
-        Returns:
-            Dictionary of post embeddings
-        """
+    def load_embeddings(self):
         try:
-            with open(self.embeddings_file, 'r', encoding='utf-8') as f:
-                self.embedding_data = json.load(f)
+            with open(self.output_dir / 'embeddings.json', 'r', encoding='utf-8') as f:
+                self.embeddings = json.load(f)
 
-            self.logger.info(f'Loaded embeddings for {len(self.embedding_data)} posts')
-            return self.embedding_data
+            self.logger.info(f'Loaded embeddings for {len(self.embeddings)} posts')
+            return True
         except Exception as e:
             self.logger.error(f'Error loading embeddings data: {e}')
-            return {}
+            return False
 
     def get_unique_tags(self) -> List[str]:
         """
@@ -100,7 +91,7 @@ class TagAnalyzer:
         if 'tag_details' in self.tag_data and tag_name in self.tag_data['tag_details']:
             sources = self.tag_data['tag_details'][tag_name].get('sources', [])
         for file in sources:
-            file['source_url'] = self.embedding_data[file['path']].get('source_url', '')
+            file['source_url'] = self.embeddings[file['path']].get('source_url', '')
         return sources
 
     def _create_definition_prompt(self, tag_name: str, source_content: List[str]) -> str:
@@ -190,7 +181,7 @@ they can expect to find under this tag.
             List of the n most similar posts with similarity scores
         """
 
-        if not self.embedding_data or not embedding:
+        if not self.embeddings or not embedding:
             return []
 
         similarities = []
@@ -198,7 +189,7 @@ they can expect to find under this tag.
         tag_embedding = np.array(embedding)
 
         # Calculate cosine similarity for each post embedding
-        for post_id, post_data in self.embedding_data.items():
+        for post_id, post_data in self.embeddings.items():
             if 'embedding' not in post_data or not post_data['embedding']:
                 continue
 
