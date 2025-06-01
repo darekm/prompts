@@ -1,0 +1,245 @@
+kod,opis
+BAAI1_W,AKTYWA | Aktywa trwałe | Wartości niematerialne i prawne | Koszty zakończonych prac rozwojowych
+BAAI1_A,AKTYWA | Aktywa trwałe | Wartości niematerialne i prawne | Koszty zakończonych prac rozwojowych | Odpisy aktualizujące wartość kosztów zakończonych prac rozwojowych
+BAAI1_U,AKTYWA | Aktywa trwałe | Wartości niematerialne i prawne | Koszty zakończonych prac rozwojowych | Umorzenie zakończonych prac rozwojowych
+BAAI2_W,AKTYWA | Aktywa trwałe | Wartości niematerialne i prawne | Wartość firmy
+BAAI2_A,AKTYWA | Aktywa trwałe | Wartości niematerialne i prawne | Wartość firmy | Odpisy aktualizujące wartość firmy
+BAAI2_U,AKTYWA | Aktywa trwałe | Wartości niematerialne i prawne | Wartość firmy | Umorzenie wartości firmy
+BAAI3_W,AKTYWA | Aktywa trwałe | Wartości niematerialne i prawne | Inne wartości niematerialne i prawne
+BAAI3_A,AKTYWA | Aktywa trwałe | Wartości niematerialne i prawne | Inne wartości niematerialne i prawne | Odpisy aktualizujące inne wartości niematerialne i prawne
+BAAI3_U,AKTYWA | Aktywa trwałe | Wartości niematerialne i prawne | Inne wartości niematerialne i prawne | Umorzenie innych wartości niematerialnych i prawnych
+BAAI4_W,AKTYWA | Aktywa trwałe | Wartości niematerialne i prawne | Zaliczki na wartości niematerialne i prawne
+BAAI4_A,AKTYWA | Aktywa trwałe | Wartości niematerialne i prawne | Zaliczki na wartości niematerialne i prawne | Odpisy aktualizujące zaliczki na wartości niematerialne i prawne
+BAAII1a_W,AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Środki trwałe | Grunty (w tym prawo użytkowania wieczystego gruntu)
+BAAII1a_A,AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Środki trwałe | Grunty (w tym prawo użytkowania wieczystego gruntu) | Odpisy aktualizujące wartość gruntów (w tym prawa użytkowania wieczystego gruntu)
+BAAII1a_U,AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Środki trwałe | Grunty (w tym prawo użytkowania wieczystego gruntu) | Umorzenie gruntów (w tym prawa użytkowania wieczystego gruntu)
+BAAII1b_W,"AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Środki trwałe | Budynki, lokale i obiekty inżynierii lądowej i wodnej"
+BAAII1b_A,"AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Środki trwałe | Budynki, lokale i obiekty inżynierii lądowej i wodnej | Odpisy aktualizujące wartość budynków, lokali i obiektów inżynierii lądowej i wodnej"
+BAAII1b_U,"AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Środki trwałe | Budynki, lokale i obiekty inżynierii lądowej i wodnej | Umorzenie budynków, lokali i obiektów inżynierii lądowej i wodnej"
+BAAII1c_W,AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Środki trwałe | Urządzenia techniczne i maszyny
+BAAII1c_A,AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Środki trwałe | Urządzenia techniczne i maszyny | Odpisy aktualizujące wartość urządzeń technicznych i maszyn
+BAAII1c_U,AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Środki trwałe | Urządzenia techniczne i maszyny | Umorzenie urządzeń technicznych i maszyn
+BAAII1d_W,AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Środki trwałe | Środki transportu
+BAAII1d_A,AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Środki trwałe | Środki transportu | Odpisy aktualizujące wartość środków transportu
+BAAII1d_U,AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Środki trwałe | Środki transportu | Umorzenie środków transportu
+BAAII1e_W,AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Środki trwałe | Inne środki trwałe
+BAAII1e_A,AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Środki trwałe | Inne środki trwałe | Odpisy aktualizujące wartość innych środków trwałych
+BAAII1e_U,AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Środki trwałe | Inne środki trwałe | Umorzenie innych środków trwałych
+BAAII2_W,AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Środki trwałe w budowie
+BAAII2_A,AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Środki trwałe w budowie | Odpisy aktualizujące wartość środków trwałych w budowie
+BAAII3_W,AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Zaliczki na środki trwałe w budowie
+BAAII3_A,AKTYWA | Aktywa trwałe | Rzeczowe aktywa trwałe | Zaliczki na środki trwałe w budowie | Odpisy aktualizujące wartość zaliczek na środki trwałe w budowie
+BAAIII1_W,AKTYWA | Aktywa trwałe | Należności długoterminowe | Od jednostek powiązanych
+BAAIII1_A,AKTYWA | Aktywa trwałe | Należności długoterminowe | Od jednostek powiązanych | Odpisy aktualizujące wartość należności od jednostek powiązanych
+BAAIII2_W,"AKTYWA | Aktywa trwałe | Należności długoterminowe | Od pozostałych jednostek, w których jednostka posiada zaangażowanie w kapitale"
+BAAIII2_A,"AKTYWA | Aktywa trwałe | Należności długoterminowe | Od pozostałych jednostek, w których jednostka posiada zaangażowanie w kapitale | Odpisy aktualizujące wartość należności od pozostałych jednostek, w których jednostka posiada zaangażowanie w kapitale"
+BAAIII3_W,AKTYWA | Aktywa trwałe | Należności długoterminowe | Od pozostałych jednostek
+BAAIII3_A,AKTYWA | Aktywa trwałe | Należności długoterminowe | Od pozostałych jednostek | Odpisy aktualizujące wartość należności od pozostałych jednostek
+BAAIV1_W,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Nieruchomości
+BAAIV1_A,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Nieruchomości | Odpisy aktualizujące wartość inwestycji długoterminowych w nieruchomości
+BAAIV1_U,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Nieruchomości | Umorzenie inwestycji długoterminowych w nieruchomości
+BAAIV2_W,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Wartości niematerialne i prawne
+BAAIV2_A,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Wartości niematerialne i prawne | Odpisy aktualizujące wartość inwestycji długoterminowych w wartości niematerialne i prawne
+BAAIV2_U,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Wartości niematerialne i prawne | Umorzenie wartości inwestycji długoterminowych w wartości niematerialne i prawne
+BAAIV3a_ULA_W,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W jednostkach powiązanych | Udziały lub akcje
+BAAIV3a_ULA_A,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W jednostkach powiązanych | Udziały lub akcje | Odpisy aktualizujące wartość udziałów lub akcji w jednostkach powiązanych
+BAAIV3a_IPW_W,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W jednostkach powiązanych | Inne papiery wartościowe
+BAAIV3a_IPW_A,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W jednostkach powiązanych | Inne papiery wartościowe | Odpisy aktualizujące wartość innych papierów wartościowych w jednostkach powiązanych
+BAAIV3a_UP_W,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W jednostkach powiązanych | Udzielone pożyczki
+BAAIV3a_UP_A,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W jednostkach powiązanych | Udzielone pożyczki | Odpisy aktualizujące wartość udzielonych pożyczek w jednostkach powiązanych
+BAAIV3a_IDAF_W,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W jednostkach powiązanych | Inne długoterminowe aktywa finansowe
+BAAIV3a_IDAF_A,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W jednostkach powiązanych | Inne długoterminowe aktywa finansowe | Odpisy aktualizujące wartość innych długoterminowych aktywów finansowych w jednostkach powiązanych
+BAAIV3b_ULA_W,"AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W pozostałych jednostkach, w których jednostka posiada zaangażowanie w kapitale | Udziały lub akcje"
+BAAIV3b_ULA_A,"AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W pozostałych jednostkach, w których jednostka posiada zaangażowanie w kapitale | Udziały lub akcje | Odpisy aktualizujące wartość udziałów lub akcji w pozostałych jednostkach, w których jednostka posiada zaangażowanie w kapitale"
+BAAIV3b_IPW_W,"AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W pozostałych jednostkach, w których jednostka posiada zaangażowanie w kapitale | Inne papiery wartościowe"
+BAAIV3b_IPW_A,"AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W pozostałych jednostkach, w których jednostka posiada zaangażowanie w kapitale | Inne papiery wartościowe | Odpisy aktualizujące wartość innych papierów wartościowych w pozostałych jednostkach, w których jednostka posiada zaangażowanie w kapitale"
+BAAIV3b_UP_W,"AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W pozostałych jednostkach, w których jednostka posiada zaangażowanie w kapitale | Udzielone pożyczki"
+BAAIV3b_UP_A,"AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W pozostałych jednostkach, w których jednostka posiada zaangażowanie w kapitale | Udzielone pożyczki | Odpisy aktualizujące wartość udzielonych pożyczek w pozostałych jednostkach, w których jednostka posiada zaangażowanie w kapitale"
+BAAIV3b_IDAF_W,"AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W pozostałych jednostkach, w których jednostka posiada zaangażowanie w kapitale | Inne długoterminowe aktywa finansowe"
+BAAIV3b_IDAF_A,"AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W pozostałych jednostkach, w których jednostka posiada zaangażowanie w kapitale | Inne długoterminowe aktywa finansowe | Odpisy aktualizujące wartość innych długoterminowych aktywów finansowych w pozostałych jednostkach, w których jednostka posiada zaangażowanie w kapitale"
+BAAIV3c_ULA_W,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W pozostałych jednostkach | Udziały lub akcje
+BAAIV3c_ULA_A,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W pozostałych jednostkach | Udziały lub akcje | Odpisy aktualizujące wartość udziałów lub akcji w pozostałych jednostkach
+BAAIV3c_IPW_W,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W pozostałych jednostkach | Inne papiery wartościowe
+BAAIV3c_IPW_A,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W pozostałych jednostkach | Inne papiery wartościowe | Odpisy aktualizujące wartość innych papierów wartościowych w pozostałych jednostkach
+BAAIV3c_UP_W,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W pozostałych jednostkach | Udzielone pożyczki
+BAAIV3c_UP_A,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W pozostałych jednostkach | Udzielone pożyczki | Odpisy aktualizujące wartość udzielonych pożyczek w pozostałych jednostkach
+BAAIV3c_IDAF_W,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W pozostałych jednostkach | Inne długoterminowe aktywa finansowe
+BAAIV3c_IDAF_A,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Długoterminowe aktywa finansowe | W pozostałych jednostkach | Inne długoterminowe aktywa finansowe | Odpisy aktualizujące wartość innych długoterminowych aktywów finansowych w pozostałych jednostkach
+BAAIV4_W,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Inne inwestycje długoterminowe
+BAAIV4_A,AKTYWA | Aktywa trwałe | Inwestycje długoterminowe | Inne inwestycje długoterminowe | Odpisy aktualizujące wartość innych inwestycji długoterminowych
+BAAV1_W,AKTYWA | Aktywa trwałe | Długoterminowe rozliczenia międzyokresowe | Aktywa z tytułu odroczonego podatku dochodowego
+BAAV1_A,AKTYWA | Aktywa trwałe | Długoterminowe rozliczenia międzyokresowe | Aktywa z tytułu odroczonego podatku dochodowego | Odpisy aktualizujące aktywa z tytułu odroczonego podatku dochodowego
+BAAV2_W,AKTYWA | Aktywa trwałe | Długoterminowe rozliczenia międzyokresowe | Inne rozliczenia międzyokresowe
+BAAV2_A,AKTYWA | Aktywa trwałe | Długoterminowe rozliczenia międzyokresowe | Inne rozliczenia międzyokresowe | Odpisy aktualizujące inne rozliczenia międzyokresowe
+BABI1,AKTYWA | Aktywa obrotowe | Zapasy | Materiały
+BABI1_O,AKTYWA | Aktywa obrotowe | Zapasy | Materiały | Odchylenia od cen ewidencyjnych materiałów
+BABI1_A,AKTYWA | Aktywa obrotowe | Zapasy | Materiały | Odpisy aktualizujące wartość materiałów
+BABI2,AKTYWA | Aktywa obrotowe | Zapasy | Półprodukty i produkty w toku
+BABI2_O,AKTYWA | Aktywa obrotowe | Zapasy | Półprodukty i produkty w toku | Odchylenia od cen ewidencyjnych półproduktów i produktów w toku
+BABI2_A,AKTYWA | Aktywa obrotowe | Zapasy | Półprodukty i produkty w toku | Odpisy aktualizujące wartość półproduktów i produktów w toku
+BABI3,AKTYWA | Aktywa obrotowe | Zapasy | Produkty gotowe
+BABI3_O,AKTYWA | Aktywa obrotowe | Zapasy | Produkty gotowe | Odchylenia od cen ewidencyjnych produktów gotowych
+BABI3_A,AKTYWA | Aktywa obrotowe | Zapasy | Produkty gotowe | Odpisy aktualizujące wartość produktów gotowych
+BABI4,AKTYWA | Aktywa obrotowe | Zapasy | Towary
+BABI4_O,AKTYWA | Aktywa obrotowe | Zapasy | Towary | Odchylenia od cen ewidencyjnych towarów
+BABI4_A,AKTYWA | Aktywa obrotowe | Zapasy | Towary | Odpisy aktualizujące wartość towarów
+BABI5,AKTYWA | Aktywa obrotowe | Zapasy | Zaliczki na dostawy i usługi
+BABI5_A,AKTYWA | Aktywa obrotowe | Zapasy | Zaliczki na dostawy i usługi | Odpisy aktualizujące zaliczki na dostawy i usługi
+BABII1a_D12,AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od jednostek powiązanych | Z tytułu dostaw i usług | o okresie spłaty do 12 miesięcy
+BABII1a_D12_A,AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od jednostek powiązanych | Z tytułu dostaw i usług | o okresie spłaty do 12 miesięcy | Odpisy aktualizujące wartość należności z tytułu dostaw i usług od jednostek powiązanych w okresie spłaty do 12 miesięcy
+BABII1a_P12,AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od jednostek powiązanych | Z tytułu dostaw i usług | o okresie spłaty powyżej 12 miesięcy
+BABII1a_P12_A,AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od jednostek powiązanych | Z tytułu dostaw i usług | o okresie spłaty powyżej 12 miesięcy | Odpisy aktualizujące wartość należności z tytułu dostaw i usług od jednostek powiązanych w okresie spłaty powyżej 12 miesięcy
+BABII1b,AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od jednostek powiązanych | Inne
+BABII1b_A,AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od jednostek powiązanych | Inne | Odpisy aktualizujące wartość innych należności od jednostek powiązanych
+BABII2a_D12,"AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od pozostałych jednostek, w których jednostka posiada zaangażowanie w kapitale | Z tytułu dostaw i usług | o okresie spłaty do 12 miesięcy"
+BABII2a_D12_A,"AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od pozostałych jednostek, w których jednostka posiada zaangażowanie w kapitale | Z tytułu dostaw i usług | o okresie spłaty do 12 miesięcy | Odpisy aktualizujące wartość należności z tytułu dostaw i usług od pozostałych jednostek, w których jednostka posiada zaangażowanie w kapitale, o okresie spłaty do 12 miesięcy"
+BABII2a_P12,"AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od pozostałych jednostek, w których jednostka posiada zaangażowanie w kapitale | Z tytułu dostaw i usług | o okresie spłaty powyżej 12 miesięcy"
+BABII2a_P12_A,"AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od pozostałych jednostek, w których jednostka posiada zaangażowanie w kapitale | Z tytułu dostaw i usług | o okresie spłaty powyżej 12 miesięcy | Odpisy aktualizujące wartość należności z tytułu dostaw i usług od pozostałych jednostek, w których jednostka posiada zaangażowanie w kapitale, o okresie spłaty powyżej 12 miesięcy"
+BABII2b,"AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od pozostałych jednostek, w których jednostka posiada zaangażowanie w kapitale | Inne"
+BABII2b_A,"AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od pozostałych jednostek, w których jednostka posiada zaangażowanie w kapitale | Inne | Odpisy aktualizujące wartość innych należności od pozostałych jednostek, w których jednostka posiada zaangażowanie w kapitale"
+BABII3a_D12,AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od pozostałych jednostek | Z tytułu dostaw i usług | o okresie spłaty do 12 miesięcy
+BABII3a_D12_A,AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od pozostałych jednostek | Z tytułu dostaw i usług | o okresie spłaty do 12 miesięcy | Odpisy aktualizujące wartość należności z tytułu dostaw i usług od pozostałych jednostek o okresie spłaty do 12 miesięcy
+BABII3a_P12,AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od pozostałych jednostek | Z tytułu dostaw i usług | o okresie spłaty powyżej 12 miesięcy
+BABII3a_P12_A,AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od pozostałych jednostek | Z tytułu dostaw i usług | o okresie spłaty powyżej 12 miesięcy | Odpisy aktualizujące wartość należności z tytułu dostaw i usług od pozostałych jednostek o okresie spłaty powyżej 12 miesięcy
+BABII3b,"AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od pozostałych jednostek | Z tytułu podatków, dotacji, ceł, ubezpieczeń społecznych i zdrowotnych oraz innych świadczeń"
+BABII3b_A,"AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od pozostałych jednostek | Z tytułu podatków, dotacji, ceł, ubezpieczeń społecznych i zdrowotnych oraz innych świadczeń | Odpisy aktualizujące wartość należności z tytułu podatków, dotacji, ceł, ubezpieczeń, społecznych i zdrowotnych oraz innych świadczeń"
+BABII3c_W,AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od pozostałych jednostek | Inne
+BABII3c_A,AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od pozostałych jednostek | Inne | Odpisy aktualizujące wartość innych należności
+BABII3d_W,AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od pozostałych jednostek | Dochodzone na drodze sądowej
+BABII3d_A,AKTYWA | Aktywa obrotowe | Należności krótkoterminowe | Należności od pozostałych jednostek | Dochodzone na drodze sądowej | Odpisy aktualizujące wartość należności dochodzonych na drodze sądowej
+BABIII1a1_ULA_W,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | W jednostkach powiązanych | Udziały lub akcje
+BABIII1a1_ULA_A,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | W jednostkach powiązanych | Udziały lub akcje | Odpisy aktualizujące wartość udziałów lub akcji w jednostkach powiązanych
+BABIII1a2_IPW_W,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | W jednostkach powiązanych | Inne papiery wartościowe
+BABIII1a2_IPW_A,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | W jednostkach powiązanych | Inne papiery wartościowe | Odpisy aktualizujące wartość innych papierów wartościowych w jednostkach powiązanych
+BABIII1a3_UP_W,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | W jednostkach powiązanych | Udzielone pożyczki
+BABIII1a3_UP_A,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | W jednostkach powiązanych | Udzielone pożyczki | Odpisy aktualizujące wartość udzielonych pożyczek w jednostkach powiązanych
+BABIII1a4_IKAF_W,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | W jednostkach powiązanych | Inne krótkoterminowe aktywa finansowe
+BABIII1a4_IKAF_A,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | W jednostkach powiązanych | Inne krótkoterminowe aktywa finansowe | Odpisy aktualizujące wartość innych krótkoterminowych aktywów finansowych w jednostkach powiązanych
+BABIII1b1_ULA_W,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | W pozostałych jednostkach | Udziały lub akcje
+BABIII1b1_ULA_A,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | W pozostałych jednostkach | Udziały lub akcje | Odpisy aktualizujące wartość udziałów lub akcji w pozostałych jednostkach
+BABIII1b2_IPW_W,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | W pozostałych jednostkach | Inne papiery wartościowe
+BABIII1b2_IPW_A,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | W pozostałych jednostkach | Inne papiery wartościowe | Odpisy aktualizujące wartość innych papierów wartościowych w pozostałych jednostkach
+BABIII1b3_UP_W,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | W pozostałych jednostkach | Udzielone pożyczki
+BABIII1b3_UP_A,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | W pozostałych jednostkach | Udzielone pożyczki | Odpisy aktualizujące wartość udzielonych pożyczek w pozostałych jednostkach
+BABIII1b4_IKAF_W,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | W pozostałych jednostkach | Inne krótkoterminowe aktywa finansowe
+BABIII1b4_IKAF_A,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | W pozostałych jednostkach | Inne krótkoterminowe aktywa finansowe | Odpisy aktualizujące wartość innych krótkoterminowych aktywów finansowych w pozostałych jednostkach
+BABIII1c1_SPKR,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | Środki pieniężne i inne aktywa pieniężne | Środki pieniężne w kasie i na rachunkach
+BABIII1c2_ISP,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | Środki pieniężne i inne aktywa pieniężne | Inne środki pieniężne
+BABIII1c2_ISP_A,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | Środki pieniężne i inne aktywa pieniężne | Inne środki pieniężne | Odpisy aktualizujące wartość innych środków pieniężnych
+BABIII1c3_IAP,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | Środki pieniężne i inne aktywa pieniężne | Inne aktywa pieniężne
+BABIII1c3_IAP_A,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Krótkoterminowe aktywa finansowe | Środki pieniężne i inne aktywa pieniężne | Inne aktywa pieniężne | Odpisy aktualizujące wartość innych aktywów pieniężnych
+BABIII2_W,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Inne inwestycje krótkoterminowe
+BABIII2_A,AKTYWA | Aktywa obrotowe | Inwestycje krótkoterminowe | Inne inwestycje krótkoterminowe | Odpisy aktualizujące wartość innych inwestycji krótkoterminowych
+BABIV,AKTYWA | Aktywa obrotowe | Krótkoterminowe rozliczenia międzyokresowe
+BABIV_A,AKTYWA | Aktywa obrotowe | Krótkoterminowe rozliczenia międzyokresowe | Odpisy aktualizujące wartość krótkoterminowych rozliczeń międzyokresowych
+BAC,AKTYWA | Należne wpłaty na kapitał (fundusz) podstawowy
+BAD,AKTYWA | Udziały (akcje) własne
+BPAI,PASYWA | Kapitał (fundusz) własny | Kapitał (fundusz) podstawowy
+BPAIIWS,PASYWA | Kapitał (fundusz) własny | Kapitał (fundusz) zapasowy | Z nadwyżki wartości sprzedaży (wartości emisyjnej) nad wartością nominalną udziałów (akcji)
+BPAII_INN,PASYWA | Kapitał (fundusz) własny | Kapitał (fundusz) zapasowy | Z innych źródeł
+BPAII_ES_ZP,PASYWA | Kapitał (fundusz) własny | Kapitał (fundusz) zapasowy | Kwota zysku wypracowanego w latach przed opodatkowaniem ryczałtem od dochodów spółek
+BPAII_ES_ZR,PASYWA | Kapitał (fundusz) własny | Kapitał (fundusz) zapasowy | Kwota zysku wypracowanego w latach opodatkowania ryczałtem od dochodów spółek
+BPAIIIAWG,PASYWA | Kapitał (fundusz) własny | Kapitał (fundusz) z aktualizacji wyceny | Z tytułu aktualizacji wartości godziwej
+BPAIII_INN,PASYWA | Kapitał (fundusz) własny | Kapitał (fundusz) z aktualizacji wyceny | Z innego tytułu
+BPAIVU,PASYWA | Kapitał (fundusz) własny | Pozostałe kapitały (fundusze) rezerwowe | Tworzone zgodnie z umową (ze statutem)
+BPAIVUW,PASYWA | Kapitał (fundusz) własny | Pozostałe kapitały (fundusze) rezerwowe | Na udziały (akcje) własne
+BPAIV_INN,PASYWA | Kapitał (fundusz) własny | Pozostałe kapitały (fundusze) rezerwowe | Inne
+BPAIV_ES_ZP,PASYWA | Kapitał (fundusz) własny | Pozostałe kapitały (fundusze) rezerwowe | Kwota zysku wypracowanego w latach przed opodatkowaniem ryczałtem od dochodów spółek
+BPAIV_ES_ZR,PASYWA | Kapitał (fundusz) własny | Pozostałe kapitały (fundusze) rezerwowe | Kwota zysku wypracowanego w latach opodatkowania ryczałtem od dochodów spółek
+BPAV,PASYWA | Kapitał (fundusz) własny | Zysk (strata) z lat ubiegłych
+BPAV_ES_NZP,PASYWA | Kapitał (fundusz) własny | Zysk (strata) z lat ubiegłych | Kwota niepodzielonych zysków wypracowanych w latach przed opodatkowaniem ryczałtem od dochodów spółek
+BPAV_ES_NPR,PASYWA | Kapitał (fundusz) własny | Zysk (strata) z lat ubiegłych | Kwota niepodzielonych zysków wypracowanych w latach opodatkowania ryczałtem od dochodów spółek
+BPAV_ES_NSP,PASYWA | Kapitał (fundusz) własny | Zysk (strata) z lat ubiegłych | Kwota niepokrytych strat poniesionych w latach przed opodatkowaniem ryczałtem od dochodów spółek
+BPAV_ES_NSR,PASYWA | Kapitał (fundusz) własny | Zysk (strata) z lat ubiegłych | Kwota niepokrytych strat poniesionych w latach opodatkowania ryczałtem od dochodów spółek
+BPAVI,PASYWA | Kapitał (fundusz) własny | Zysk (strata) netto
+BPAVII,PASYWA | Kapitał (fundusz) własny | Odpisy z zysku netto w ciągu roku obrotowego (wielkość ujemna)
+BPBI1,PASYWA | Zobowiązania i rezerwy na zobowiązania | Rezerwy na zobowiązania | Rezerwa z tytułu odroczonego podatku dochodowego
+BPBI2_D,PASYWA | Zobowiązania i rezerwy na zobowiązania | Rezerwy na zobowiązania | Rezerwa na świadczenia emerytalne i podobne | Długoterminowa
+BPBI2_K,PASYWA | Zobowiązania i rezerwy na zobowiązania | Rezerwy na zobowiązania | Rezerwa na świadczenia emerytalne i podobne | Krótkoterminowa
+BPBI3_D,PASYWA | Zobowiązania i rezerwy na zobowiązania | Rezerwy na zobowiązania | Pozostałe rezerwy | Długoterminowe
+BPBI3_K,PASYWA | Zobowiązania i rezerwy na zobowiązania | Rezerwy na zobowiązania | Pozostałe rezerwy | Krótkoterminowe
+BPBII1,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania długoterminowe | Wobec jednostek powiązanych
+BPBII2,"PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania długoterminowe | Wobec pozostałych jednostek, w których jednostka posiada zaangażowanie w kapitale"
+BPBII3a,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania długoterminowe | Wobec pozostałych jednostek | Kredyty i pożyczki
+BPBII3b,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania długoterminowe | Wobec pozostałych jednostek | Z tytułu emisji dłużnych papierów wartościowych
+BPBII3c,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania długoterminowe | Wobec pozostałych jednostek | Inne zobowiązania finansowe
+BPBII3d,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania długoterminowe | Wobec pozostałych jednostek | Zobowiązania wekslowe
+BPBII3e,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania długoterminowe | Wobec pozostałych jednostek | Inne
+BPBIII1a_D12,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania krótkoterminowe | Wobec jednostek powiązanych | Z tytułu dostaw i usług | O okresie wymagalności do 12 miesięcy
+BPBIII1a_P12,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania krótkoterminowe | Wobec jednostek powiązanych | Z tytułu dostaw i usług | O okresie wymagalności powyżej 12 miesięcy
+BPBIII1b,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania krótkoterminowe | Wobec jednostek powiązanych | Inne
+BPBIII2a_D12,"PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania krótkoterminowe | Wobec pozostałych jednostek, w których jednostka posiada zaangażowanie w kapitale | Z tytułu dostaw i usług | O okresie wymagalności do 12 miesięcy"
+BPBIII2a_P12,"PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania krótkoterminowe | Wobec pozostałych jednostek, w których jednostka posiada zaangażowanie w kapitale | Z tytułu dostaw i usług | O okresie wymagalności powyżej 12 miesięcy"
+BPBIII2b,"PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania krótkoterminowe | Wobec pozostałych jednostek, w których jednostka posiada zaangażowanie w kapitale | Inne"
+BPBIII3a,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania krótkoterminowe | Wobec pozostałych jednostek | Kredyty i pożyczki
+BPBIII3b,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania krótkoterminowe | Wobec pozostałych jednostek | Z tytułu emisji dłużnych papierów wartościowych
+BPBIII3c,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania krótkoterminowe | Wobec pozostałych jednostek | Inne zobowiązania finansowe
+BPBIII3d_D12,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania krótkoterminowe | Wobec pozostałych jednostek | Z tytułu dostaw i usług | O okresie wymagalności do 12 miesięcy
+BPBIII3d_P12,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania krótkoterminowe | Wobec pozostałych jednostek | Z tytułu dostaw i usług | O okresie wymagalności powyżej 12 miesięcy
+BPBIII3e,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania krótkoterminowe | Wobec pozostałych jednostek | Zaliczki otrzymane na dostawy i usługi
+BPBIII3f,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania krótkoterminowe | Wobec pozostałych jednostek | Zobowiązania wekslowe
+BPBIII3g,"PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania krótkoterminowe | Wobec pozostałych jednostek | Z tytułu podatków, ceł, ubezpieczeń i innych świadczeń"
+BPBIII3h,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania krótkoterminowe | Wobec pozostałych jednostek | Z tytułu wynagrodzeń
+BPBIII3i,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania krótkoterminowe | Wobec pozostałych jednostek | Inne
+BPBIII4,PASYWA | Zobowiązania i rezerwy na zobowiązania | Zobowiązania krótkoterminowe | Fundusze specjalne
+BPBIV1,PASYWA | Zobowiązania i rezerwy na zobowiązania | Rozliczenia międzyokresowe | Ujemna wartość firmy
+BPBIV2_D,PASYWA | Zobowiązania i rezerwy na zobowiązania | Rozliczenia międzyokresowe | Inne rozliczenia międzyokresowe | Długoterminowe
+BPBIV2_K,PASYWA | Zobowiązania i rezerwy na zobowiązania | Rozliczenia międzyokresowe | Inne rozliczenia międzyokresowe | Krótkoterminowe
+RPAI_RKAI_POW,"WYNIKOWE | Przychody netto ze sprzedaży i zrównane z nimi / przychody netto ze sprzedaży produktów, towarów i materiałów | Przychody netto ze sprzedaży produktów | Od jednostek powiązanych"
+RPAI_RKAI_POZ,"WYNIKOWE | Przychody netto ze sprzedaży i zrównane z nimi / przychody netto ze sprzedaży produktów, towarów i materiałów | Przychody netto ze sprzedaży produktów | Od pozostałych jednostek"
+RPAII,WYNIKOWE | Przychody netto ze sprzedaży i zrównane z nimi | Zmiana stanu produktów
+RPAIII,WYNIKOWE | Przychody netto ze sprzedaży i zrównane z nimi | Koszt wytworzenia produktów na własne potrzeby
+RPAIV_RKAII_POW,"WYNIKOWE | Przychody netto ze sprzedaży i zrównane z nimi / przychody netto ze sprzedaży produktów, towarów i materiałów | Przychody netto ze sprzedaży towarów i materiałów | Od jednostek powiązanych"
+RPAIV_RKAII_POZ,"WYNIKOWE | Przychody netto ze sprzedaży i zrównane z nimi / przychody netto ze sprzedaży produktów, towarów i materiałów | Przychody netto ze sprzedaży towarów i materiałów | Od pozostałych jednostek"
+RPBI,WYNIKOWE | Koszty działalności operacyjnej | Amortyzacja
+RPBII,WYNIKOWE | Koszty działalności operacyjnej | Zużycie materiałów i energii
+RPBIII,WYNIKOWE | Koszty działalności operacyjnej | Usługi obce
+RPBIV_AKC,WYNIKOWE | Koszty działalności operacyjnej | Podatki i opłaty | Podatek akcyzowy
+RPBIV_POZ,WYNIKOWE | Koszty działalności operacyjnej | Podatki i opłaty | Pozostałe podatki i opłaty
+RPBV,WYNIKOWE | Koszty działalności operacyjnej | Wynagrodzenia
+RPBVI,WYNIKOWE | Koszty działalności operacyjnej | Ubezpieczenia społeczne i inne świadczenia
+RPBVI_E,WYNIKOWE | Koszty działalności operacyjnej | Ubezpieczenia społeczne i inne świadczenia | Emerytalne
+RPBVII,WYNIKOWE | Koszty działalności operacyjnej | Pozostałe koszty rodzajowe
+RPBVIII_RKBII_POW,"WYNIKOWE | Koszty działalności operacyjnej / koszty sprzedanych produktów, towarów i materiałów | Wartość sprzedanych towarów i materiałów | Dla jednostek powiązanych"
+RPBVIII_RKBII_POZ,"WYNIKOWE | Koszty działalności operacyjnej / koszty sprzedanych produktów, towarów i materiałów | Wartość sprzedanych towarów i materiałów | Dla pozostałych jednostek"
+RKBI_POW,"WYNIKOWE | Koszty sprzedanych produktów, towarów i materiałów | Koszt wytworzenia sprzedanych produktów | Jednostkom powiązanym"
+RKBI_POZ,"WYNIKOWE | Koszty sprzedanych produktów, towarów i materiałów | Koszt wytworzenia sprzedanych produktów | Pozostałym jednostkom"
+RKD,WYNIKOWE | Koszty sprzedaży
+RKE,WYNIKOWE | Koszty ogólnego zarządu
+RPDI_RKGI_POW,WYNIKOWE | Pozostałe przychody operacyjne | Przychody ze zbycia niefinansowych aktywów trwałych | Od jednostek powiązanych
+RPDI_RKGI_POZ,WYNIKOWE | Pozostałe przychody operacyjne | Przychody ze zbycia niefinansowych aktywów trwałych | Od pozostałych jednostek
+RPDII_RKGII,WYNIKOWE | Pozostałe przychody operacyjne | Dotacje
+RPDIII_RKGIII,WYNIKOWE | Pozostałe przychody operacyjne | Aktualizacja wartości aktywów niefinansowych
+RPDIV_RKGIV,WYNIKOWE | Pozostałe przychody operacyjne | Inne pozostałe przychody operacyjne
+RPDIV_RKGIV_ZCP,WYNIKOWE | Pozostałe przychody operacyjne | Inne pozostałe przychody operacyjne | Ze zbycia zorganizowanej części przedsiębiorstwa
+RPDIV_RKGIV_WF,WYNIKOWE | Pozostałe przychody operacyjne | Inne pozostałe przychody operacyjne | Odpis ujemnej wartości firmy
+RPDIV_RKGIV_P,WYNIKOWE | Pozostałe przychody operacyjne | Inne pozostałe przychody operacyjne | Pozostałe
+RPEI_RKHI_POW,WYNIKOWE | Pozostałe koszty operacyjne | Koszty zbycia niefinansowych aktywów trwałych | Dla jednostek powiązanych
+RPEI_RKHI_POZ,WYNIKOWE | Pozostałe koszty operacyjne | Koszty zbycia niefinansowych aktywów trwałych | Dla pozostałych jednostek
+RPEII_RKHII,WYNIKOWE | Pozostałe koszty operacyjne | Aktualizacja wartości aktywów niefinansowych
+RPEIII_RKHIII,WYNIKOWE | Pozostałe koszty operacyjne | Inne
+RPEIII_RKHIII_ZCP,WYNIKOWE | Pozostałe koszty operacyjne | Inne | Koszty zbycia zorganizowanej części przedsiębiorstwa
+RPEIII_RKHIII_WF,WYNIKOWE | Pozostałe koszty operacyjne | Inne | Odpis wartości firmy
+RPEIII_RKHIII_P,WYNIKOWE | Pozostałe koszty operacyjne | Inne | Pozostałe
+RPGIa_RKJIa_POW_k,WYNIKOWE | Przychody finansowe | Dywidendy i udziały w zyskach | Od jednostek powiązanych | W których jednostka posiada zaangażowanie w kapitale
+RPGIa_RKJIa_POW_p,WYNIKOWE | Przychody finansowe | Dywidendy i udziały w zyskach | Od jednostek powiązanych | W innych jednostkach powiązanych
+RPGIb_RKJIb_POZ_k,WYNIKOWE | Przychody finansowe | Dywidendy i udziały w zyskach | Od pozostałych jednostek | W których jednostka posiada zaangażowanie w kapitale
+RPGIb_RKJIb_POZ_p,WYNIKOWE | Przychody finansowe | Dywidendy i udziały w zyskach | Od pozostałych jednostek | W innych pozostałych jednostkach
+RPGII_RKJII_POW,WYNIKOWE | Przychody finansowe | Odsetki | Od jednostek powiązanych
+RPGII_RKJII_POZ,WYNIKOWE | Przychody finansowe | Odsetki | Od pozostałych jednostek
+RPGIII_RKJIII_POW,WYNIKOWE | Przychody finansowe | Przychód z tytułu rozchodu aktywów finansowych | W jednostkach powiązanych
+RPGIII_RKJIII_POZ,WYNIKOWE | Przychody finansowe | Przychód z tytułu rozchodu aktywów finansowych | W pozostałych jednostkach
+RPGIV_RKJIV,WYNIKOWE | Przychody finansowe | Aktualizacja wartości aktywów finansowych
+RPGV_RKJV_RK,WYNIKOWE | Przychody finansowe | Inne | Przychody z tytułu dodatnich różnic kursowych
+RPGV_RKJV_POZ,WYNIKOWE | Przychody finansowe | Inne | Pozostałe
+RPHI_RKKI_POW,WYNIKOWE | Koszty finansowe | Odsetki | Dla jednostek powiązanych
+RPHI_RKKI_POZ,WYNIKOWE | Koszty finansowe | Odsetki | Dla pozostałych jednostek
+RPHII_RKKII_POW,WYNIKOWE | Koszty finansowe | Koszty z tytułu rozchodu aktywów finansowych | W jednostkach powiązanych
+RPHII_RKKII_POZ,WYNIKOWE | Koszty finansowe | Koszty z tytułu rozchodu aktywów finansowych | W pozostałych jednostkach
+RPHIII_RKKIII,WYNIKOWE | Koszty finansowe | Aktualizacja wartości aktywów finansowych
+RPHIV_RKKIV_RK,WYNIKOWE | Koszty finansowe | Inne | Koszty z tytułu ujemnych różnic kursowych
+RPHIV_RKKIV_POZ,WYNIKOWE | Koszty finansowe | Inne | Pozostałe
+RPJ_RKM_B,WYNIKOWE | Podatek dochodowy | Bieżący
+RPJ_RKM_O,WYNIKOWE | Podatek dochodowy | Odroczony
+RPK_RKN,WYNIKOWE | Pozostałe obowiązkowe zmniejszenia zysku (zwiększenia straty)
+INNE,"Inne, niewskazane w słowniku"
