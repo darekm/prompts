@@ -65,8 +65,8 @@ class ChatPrompt:
             reports = file.read()
         return f'\f# **Instrukcje**\n {rejestry} \f# **Raporty**\n{reports} '
 
-    def prompt(self, name, question):
-        if name == 'kadry':
-            return f'{self.file("primary_chat.md")} {self.reports(name)}\f# **Pytania** \n{question}'
+    def prompt(self, variant, question):
+        if variant == 'kadry':
+            return f'{self.file("primary_chat.md")} {self.reports(variant)}\f# **Pytania** \n{question}'
 
-        return f'{self.file("system_chat.md")} {self.reports(name)}\f# **Pytania** \n{question}'
+        return f'{self.file("system_chat.md")} {self.reports(variant)}\f# **Pytania** \n{question}'

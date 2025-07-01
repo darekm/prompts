@@ -34,6 +34,11 @@ class TestChatFKEvaluate(EvaluateChat):
             'wysokoscvat', 'syntetyka', 'Podaj wysokość VAT?', {'value': 123344.00, 'genre': 'data'}
         )
 
+    async def test_setup_getnip(self):
+        await self.check_question(
+            'getnip', 'setup', 'Podaj numer NIP?', {'value': 6481007070, 'genre': 'data'}
+        )
+
     async def test_podatek_dozaplaty(self):
         await self.check_question(
             'podatekdozaplaty',

@@ -29,7 +29,7 @@ class EvaluateChat(unittest.async_case.IsolatedAsyncioTestCase):
         self.err = ''
         self.prompt = ''
         self.path = ''
-        self.debug_level= '2'
+        self.debug_level = '2'
         self.short = os.environ.get('SHORT', '0')
         self.error_fields = []
         self.billed_tokens = 0
@@ -140,33 +140,33 @@ class EvaluateChat(unittest.async_case.IsolatedAsyncioTestCase):
 
     async def compute_document(self, file_out, question, variant):
         chat = ChatPrompt(self.logger)
-        record = await chat.extract(variant,question)
+        record = await chat.extract(variant, question)
         self.billed_tokens += chat.billed_tokens
-        r={'prompt': chat.full_prompt, 'response': json.loads(record)}
+        r = {'prompt': chat.full_prompt, 'response': json.loads(record)}
         self.dump(file_out, r)
         return record
-    
+
     async def compute_explain(self, file_out, error):
         with open(f'{os.path.join(self.test_dir, self.path, file_out)}.json.out', 'r') as file:
-            body=file.read
+            body = file.read
 
         chat = ChatPrompt(self.logger)
-        record = await chat.explain(body,error)
+        record = await chat.explain(body, error)
         self.billed_tokens += chat.billed_tokens
         self.dump(f'{file_out}.prompt', record)
         return record
-    
-    async def check_question(self, file_name, variant,question, answer):
+
+    async def check_question(self, file_out, variant, question, answer):
         start = datetime.now()
 
         _ladder = {}
         _ladder['question'] = question
         _ladder['ground'] = answer
-        self._json_name = file_name
+        self._json_name = file_out
 
         try:
             self.prompt = question
-            record = await self.compute_document(f'{file_name}.out', question, variant)
+            record = await self.compute_document(f'{file_out}.out', question, variant)
             _ladder['duration'] = (datetime.now() - start).total_seconds()
 
             proper, count = self.check(answer, record)
@@ -179,12 +179,9 @@ class EvaluateChat(unittest.async_case.IsolatedAsyncioTestCase):
 
         finally:
             pass
-        self.assertEqual(proper, count, f' Errors in {file_name}')
-
+        self.assertEqual(proper, count, f' Errors in {file_out}')
 
     async def explain_response(self, file_name, error):
         record = await self.compute_explain(f'{file_name}.out', error)
-        print( record)
+        print(record)
         self.assertTrue(record, f' Errors in {file_name}')
-
-           
