@@ -8,7 +8,7 @@ PROMPT_DIR = pathlib.Path(__file__).parent.parent
 
 class ChatPrompt:
     def __init__(self, logger):
-        self.model = 'o3-mini'
+        self.model = 'openai41'
         self.logger = logger
         self.billed_tokens = 0
         self.full_prompt = ''
@@ -47,23 +47,23 @@ class ChatPrompt:
     def reports(self, name):
         if name == 'kadry':
             reports = self.file('report_koniec_umow.md')
-            report_umpra=self.file('umpra.json')
-            report_badania = self.file('badania.json')
+            report_umpra=self.file('report_umpra.json')
+            report_badania = self.file('report_badania.json')
             return f'\f# **attached_reports**\n{reports} ## **baza_umów_pracowniczych**\n{report_umpra} ## **baza_badań**\n{report_badania}'
         if name == 'place':
-            reports = self.file('place_report.md')
+            reports = self.file('report_place.md')
             return f'\f# **Raporty**\n{reports} '
         if name == 'vat':
             with open(self.path / 'vat_report.md', 'r') as file:
                 reports = file.read()
             return f'\f# **Raporty**\n{reports} '
 
-        with open(self.path / 'rejestry_vat.md', 'r') as file:
-            rejestry = file.read()
+        with open(self.path / 'instrukcja_rejestry_vat.md', 'r') as file:
+            instrukcja_rejestry = file.read()
 
         with open(self.path / 'base_report.md', 'r') as file:
             reports = file.read()
-        return f'\f# **Instrukcje**\n {rejestry} \f# **Raporty**\n{reports} '
+        return f'\f# **Instrukcje**\n {instrukcja_rejestry} \f# **Raporty**\n{reports} '
 
     def prompt(self, variant, question):
         if variant == 'kadry':
