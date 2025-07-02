@@ -31,20 +31,18 @@ class TestChatFKEvaluate(EvaluateChat):
 
     async def test_wysokość_vat(self):
         await self.check_question(
-            'wysokoscvat', 'syntetyka', 'Podaj wysokość VAT?', {'value': 123344.00, 'genre': 'data'}
+            'wysokoscvat', 'syntetyka', 'Podaj wysokość VAT?', {'value': 16133.00, 'genre': 'data'}
         )
 
     async def test_setup_getnip(self):
-        await self.check_question(
-            'getnip', 'setup', 'Podaj numer NIP?', {'value': 6481007070, 'genre': 'data'}
-        )
+        await self.check_question('getnip', 'setup', 'Podaj numer NIP?', {'value': 6481007070, 'genre': 'data'})
 
     async def test_podatek_dozaplaty(self):
         await self.check_question(
             'podatekdozaplaty',
             'syntetyka',
             ' Jaka jest wysokość podatku do zapłacenia za listopad?',
-            {'period': 'from 01.11.2025 to 30.11.2025', 'genre': 'clarification'},
+            {'period': 'from 01.11.2025 to 30.11.2025', 'genre': 'completion', 'needed': [['deklaracja_VAT7']]},
         )
 
     async def test_wykaz_badan(self):

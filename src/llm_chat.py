@@ -31,7 +31,7 @@ class ChatPrompt:
 
     async def extract_fk(self, text):
         # self.logger.debug(f'Completion  {model}  invoice')
-        result = await self.completion(self.prompt('rejestry_vat.md', text), self.model)
+        result = await self.completion(self.prompt('instrukcja_rejestry_vat.md', text), self.model)
         return result
 
     async def extract(self, variant, text):
@@ -44,26 +44,29 @@ class ChatPrompt:
             body_system = file.read()
         return body_system
 
-    def reports(self, name):
-        if name == 'kadry':
+    def reports(self, variant):
+        if variant == 'kadry':
             reports = self.file('report_koniec_umow.md')
             report_umpra=self.file('report_umpra.json')
             report_badania = self.file('report_badania.json')
             return f'\f# **attached_reports**\n{reports} ## **baza_umów_pracowniczych**\n{report_umpra} ## **baza_badań**\n{report_badania}'
-        if name == 'place':
+        if variant == 'place':
             reports = self.file('report_place.md')
             return f'\f# **Raporty**\n{reports} '
-        if name == 'vat':
-            with open(self.path / 'vat_report.md', 'r') as file:
-                reports = file.read()
-            return f'\f# **Raporty**\n{reports} '
-
+        
         with open(self.path / 'instrukcja_rejestry_vat.md', 'r') as file:
             instrukcja_rejestry = file.read()
 
-        with open(self.path / 'base_report.md', 'r') as file:
-            reports = file.read()
-        return f'\f# **Instrukcje**\n {instrukcja_rejestry} \f# **Raporty**\n{reports} '
+
+        if variant == 'vat':
+            with open(self.path / 'vat_report.md', 'r') as file:
+                reports = file.read()
+            return f'\f# **Instrukcje**\n {instrukcja_rejestry} \f# **Raporty**\n{reports} '
+
+        if variant == 'syntetyka':
+            with open(self.path / 'base_report.md', 'r') as file:
+                reports = file.read()
+            return f'\f# **Instrukcje**\n {instrukcja_rejestry} \f# **Raporty**\n{reports} '
 
     def prompt(self, variant, question):
         if variant == 'kadry':

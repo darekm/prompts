@@ -10,7 +10,7 @@ Dokonaj analizy tekstu, na tej podstawie zaproponuj i wykonaj kolejne kroki spra
    - `manual` - użutkownik powinien wprowadzić daną informację
    - `confirm` - dokonano wydobycia danej z raportu
 3. `report_name` - nazwa raportu
-4. `report_period` - okres za który raport winien być wygenerowany
+4. `report_period` - okres za który raport winien być wygenerowany: data początkowa i końcowa w formacie dd/mm/yyy
 5. `report_entity` dodatkowa informacja wymagana do tworzenia raportu (osoba, firma, etc) zawarta w pytaniu  
 6. `problem` - opis przyczyny przyczyny wystąpienia nieoczekiwanej wartości na raporcie. 
 7. `text` - sposób wykonania danego kroku

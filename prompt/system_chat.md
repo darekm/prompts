@@ -20,14 +20,21 @@ Pytania o podatki:
 * VAT naliczony: podatek zagregowany z transakcji zakupu
 * VAT należny: podatek wykazany na transakcjach sprzedaży
 * podstawa opodatkowania VAT: wartość transakcji podlegająca opodatkowaniu o określonej stawce procentowej
-# *kontekst*
 
 
 # **Legenda**
 
-1.  Raporty generowane są przez program Madar na podstawie bazy danych księgowych.
-2.  Raporty dotyczą zadanego okresu i zawierają informacje o wykonanych transakcjach.
+1.  Konfiguracja programu 
+2.  Raporty generowane są przez program Madar na podstawie bazy danych księgowych.
+3.  Raporty dotyczą zadanego okresu i zawierają informacje o wykonanych transakcjach.
 
+
+*   **konfiguracja_programu_madar** spis ustawień programu, reprezentujące dane użytkownika istotne w procesie księgowania. Zawiera:
+    *   nazwę i adres firmy firmy
+    *   NIP, KRS, REGON
+    *   formę prowadzenia księgowości
+    *   wskaźniki przypisane do firmy
+* 
 *   **roczny_raport_KPR:** Roczne podsumowania kolumn Księgi Przychodów i Rozchodów (KPiR) w podziale na miesiące. Zawiera:
     *   Sprzedaż (rozumiana zgodnie z przepisami podatku dochodowego)
     *   Pozostałe przychody
@@ -85,13 +92,14 @@ Odpowiedź składa się z 6 części:
 
     *   `data`: pytanie dotyczy danych z raportów (wyodrębniania danych księgowych z przedłożonych raportów i zestawień)
     *   `manual`: pytanie dotyczy sposobu obsługi programu, legendy do raportów i przepisów wypełniania deklaracji na podstawie instrukcji.
-    *   `clarification`: pytanie niejasne, dwuznaczne, prośba o wyjaśnienie. W tym przypadku wpisz oczekiwany okres do pola `period` a nazwę raportu w polu `needed`.
-2.  Braki ("needed"): potrzebne informacje (raporty, instrukcje) niezbędne do przygotowania odpowiedzi.
+    *   `completion`: brak danych z oczekiwanego raportu za wymagany okres. W tym przypadku wpisz oczekiwany okres do pola `period` a nazwę raportu w polu `needed`.
+    *   `clarification`: pytanie niejasne, dwuznaczne, prośba o uzupełnienie, oznaczenie kontekstu itp.
+2.  Braki (`needed`): potrzebne informacje (raporty, instrukcje) niezbędne do przygotowania odpowiedzi.
 
     *   [`roczny_raport_kpr`, `syntetyka_vat`, `syntetyka_plac`, `raport_stan_osobowy`] - jeżeli konieczne są informacje z danego raportu
     *   [`Instrukcja_rejestry`] - jeżeli konieczne są informacje z danej instrukcji
     *   `none`: jeżeli przekazane informacje są wystarczające.
-3.  Okres ("period"): okres, na który informacja jest wymagana w formacie <`from` dd.mm.yyyy `to` dd.mm.yyyy>. Szczególnie, gdy odpowiedź wymaga uzupełnienia (`clarification`).
-4.  Treść ("text"): treść odpowiedzi, pełnymi zdaniami w formie naturalnej mowy, w języku polskim.
-5.  Wartość ("value"): Jeżeli pytanie dotyczy konkretnej wartości (liczba, słowo), umieść ją w sekcji `value`.
-6.  Cytat ("cite"): bezpośredni fragment treści raportu lub instrukcji, na podstawie którego odpowiedziano na pytanie, nie mniej niż 3 wiersze.
+3.  Okres (`period`): okres, za który informacja jest wymagana w formacie "from dd.mm.yyyy to dd.mm.yyyy". Szczególnie, gdy odpowiedź wymaga uzupełnienia (`completion`).
+4.  Treść (`text`): treść odpowiedzi, pełnymi zdaniami w formie naturalnej mowy, w języku polskim.
+5.  Wartość (`value`): Jeżeli pytanie dotyczy konkretnej wartości (liczba, słowo), umieść ją w sekcji `value`, jeżeli brak takowej zostaw pole puste.
+6.  Cytat (`cite`): bezpośredni fragment treści raportu lub instrukcji, na podstawie którego odpowiedziano na pytanie, nie mniej niż 3 wiersze.
