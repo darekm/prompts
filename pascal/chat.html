@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chat</title>
+    <link rel="stylesheet" href="chat.css">
+</head>
+<body>
+    <div class="header">
+        <h1>💬 Simple Chat</h1>
+    </div>
+
+    <div class="history" id="chatHistory">
+        <div class="message bot-message">
+            <div class="message-content">
+                <span>Hello! How can I help you today?</span>
+                <span class="info-icon" onclick="toggleInfoBubble(this)">&#8505;</span>
+            </div>
+            <div class="info-bubble">
+                This is some additional information about the bot's greeting.
+            </div>
+        </div>
+        <div class="message user-message">
+            Hi there! I'm testing this chat interface.
+        </div>
+        <div class="message bot-message">
+            <div class="message-content">
+                <span>Great! The interface looks good. Feel free to ask me anything or continue testing the chat functionality.
+                    kirem imaduahsodvinapdsvnad
+                    audha osiuxpaoimxpoaihmrgpoasijg
+                    oaiudfhoaiushmfoaishmpaosiahpogf
+                    paosdifhmpasoiapodsghapdogh
+                    
+                </span>
+                <span class="info-icon" onclick="toggleInfoBubble(this)">&#8505;</span>
+            </div>
+            <div class="info-bubble">
+                This bubble contains extra details about the bot's capabilities.
+            </div>
+        </div>
+    </div>
+
+    <div class="ask-section">
+        <div class="options">
+            <button class="option-button" onclick="insertQuickMessage('Hello')">&#128075; Hello</button>
+            <button class="option-button" onclick="insertQuickMessage('How are you?')">&#10067; How are you?</button>
+            <button class="option-button" onclick="insertQuickMessage('Thank you')">&#128591; Thank you</button>
+            <button class="option-button" onclick="clearChat()">&#128465;&#65039; Clear</button>
+        </div>
+        
+        <section class="input-section">
+            <div class="input-container">
+                <textarea 
+                    class="message-input" 
+                    id="messageInput" 
+                    placeholder="Type your message here..." 
+                    rows="3"
+                    onkeydown="handleKeyPress(event)"></textarea>
+                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                    Send
+                </button>
+                <button class="attach-button" id="attachButton" onclick="attachFile()">
+                    📎
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <script src="chat.js"></script>
+</body>
+</html>
